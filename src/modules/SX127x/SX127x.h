@@ -667,6 +667,14 @@ class SX127x: public PhysicalLayer {
     int16_t receiveDirect() override;
 
     /*!
+      \brief Enables direct reception mode on pin DIO2 (data).
+      While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.
+
+      \returns \ref status_codes
+    */
+    int16_t receiveBitDirect() ;
+
+    /*!
       \brief Disables direct mode and enables packet mode, allowing the module to receive packets. Can only be activated in FSK mode.
 
       \returns \ref status_codes
@@ -698,6 +706,23 @@ class SX127x: public PhysicalLayer {
       \brief Clears interrupt service routine to call when DIO1 activates.
     */
     void clearDio1Action();
+
+    /*!
+      \brief Set interrupt service routine function to call when DIO2 activates.
+
+      \param func Pointer to interrupt service routine.
+    */
+    void setDio2Action(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when DIO2 activates.
+    */
+    void clearDio2Action();
+
+    /*!
+      \brief allows caller to set arbitrary register
+    */
+    int16_t lowlevel(uint8_t address, uint8_t data, uint8_t lbit, uint8_t rbit);
 
     /*!
       \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
@@ -1026,6 +1051,21 @@ class SX127x: public PhysicalLayer {
     */
     int16_t invertIQ(bool invertIQ);
 
+    /*!
+      \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
+
+      \param func Pointer to interrupt service routine.
+    */
+    void setDirectAction(void (*func)(void));
+
+    /*!
+      \brief Function calculate OOK or RSSI noise floor.
+
+      \returns  threshold setting.
+    */
+    uint8_t calOOK(uint8_t startval = 0);
+    uint8_t calRSSI(uint8_t knob = 0);
+
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
@@ -1049,6 +1089,7 @@ class SX127x: public PhysicalLayer {
     int16_t configFSK();
     int16_t getActiveModem();
     int16_t directMode();
+    int16_t directBitMode();
     int16_t setPacketMode(uint8_t mode, uint8_t len);
 
 #if !defined(RADIOLIB_GODMODE)

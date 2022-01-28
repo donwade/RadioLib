@@ -269,7 +269,7 @@ int16_t SX1272::setGain(uint8_t gain) {
       // gain set to 0, enable AGC loop
       state |= _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, SX127X_AGC_AUTO_ON, 3, 3);
     } else {
-      state |= _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, SX127X_AGC_AUTO_ON, 3, 3);
+      state |= _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, SX127X_AGC_AUTO_OFF, 3, 3);
       state |= _mod->SPIsetRegValue(SX127X_REG_LNA, (gain << 5) | SX127X_LNA_BOOST_ON);
     }
 

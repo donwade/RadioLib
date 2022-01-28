@@ -83,7 +83,10 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
 
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   ModuleSerial = serial;
-#else
+  _initInterface = true;
+  pinMode(_rx, INPUT); //dio1
+  pinMode(_tx, INPUT); //dio2
+ #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
   (void)serial;
 #endif
@@ -123,7 +126,9 @@ void Module::init(uint8_t interface) {
     case RADIOLIB_USE_UART:
       if(_initInterface) {
 #if defined(ESP32)
+	#if defined(RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED)
         ModuleSerial->begin(baudrate, SERIAL_8N1, _rx, _tx);
+	#endif
 #else
         ModuleSerial->begin(baudrate);
 #endif

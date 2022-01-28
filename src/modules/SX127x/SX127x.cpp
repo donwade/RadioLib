@@ -10,6 +10,7 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  Module::pinMode(_mod->getTx(), INPUT);
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
@@ -56,6 +57,7 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
+  Module::pinMode(_mod->getTx(), INPUT);
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
@@ -344,6 +346,15 @@ int16_t SX127x::receiveDirect() {
   return(setMode(SX127X_RX));
 }
 
+int16_t SX127x::receiveBitDirect() {
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+  _mod->setRfSwitchState(HIGH, LOW);
+  int16_t state = directBitMode();
+  RADIOLIB_ASSERT(state);
+  return(setMode(SX127X_RX));
+}
 int16_t SX127x::directMode() {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
@@ -351,6 +362,19 @@ int16_t SX127x::directMode() {
 
   // set DIO mapping
   state = _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO1_CONT_DCLK | SX127X_DIO2_CONT_DATA, 5, 2);
+  RADIOLIB_ASSERT(state);
+
+  // set continuous mode
+  return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_2, SX127X_DATA_MODE_CONTINUOUS, 6, 6));
+}
+
+int16_t SX127x::directBitMode() {
+  // set mode to standby
+  int16_t state = setMode(SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
+
+  // set DIO mapping (force DIO1 NOT to provide DCLK)
+  state = _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO2_CONT_DATA, 3, 2);
   RADIOLIB_ASSERT(state);
 
   // set continuous mode
@@ -432,6 +456,24 @@ void SX127x::clearDio1Action() {
   Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
+void SX127x::setDio2Action(void (*func)(void)) {
+  if(_mod->getTx() == RADIOLIB_NC) {
+    return;
+  }
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getTx()), func, CHANGE);
+}
+void SX127x::clearDio2Action() {
+  if(_mod->getTx() == RADIOLIB_NC) {
+    return;
+  }
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getTx()));
+}
+int16_t SX127x::lowlevel(uint8_t address, uint8_t data, uint8_t lbit, uint8_t rbit)
+{
+	int16_t state;
+	state = _mod->SPIsetRegValue(address, data, lbit, rbit);
+	return(state);
+}
 int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
@@ -760,14 +802,19 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
 
 uint8_t SX127x::calculateBWManExp(float bandwidth)
 {
+  float point;
   for(uint8_t e = 7; e >= 1; e--) {
     for(int8_t m = 2; m >= 0; m--) {
-      float point = (SX127X_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
-      if(fabs(bandwidth - ((point / 1000.0) + 0.05)) <= 0.5) {
+      point = (SX127X_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
+      Serial.printf("%s : m=%d e=%d est=%4.1f tgt=%4.1f\n", __FUNCTION__, m, e, point/1000, bandwidth);
+      //if(fabs(bandwidth - ((point / 1000.0) + 0.05)) <= 0.5) {
+      if (bandwidth <= point/1000) {  //original wants exact b/w within a half db. No way!
+      	Serial.println("bw calc pass");
         return((m << 3) | e);
       }
     }
   }
+  Serial.printf("%s: bandwidth too larget at %f best = %f\n", __FUNCTION__, bandwidth, point/1000);
   return 0;
 }
 
@@ -800,6 +847,7 @@ int16_t SX127x::setAFCBandwidth(float rxBw){
   RADIOLIB_ASSERT(state);
 
   // set AFC bandwidth
+  Serial.printf("%s : rxBw = %f calcReg = 0x%02X\n", __FUNCTION__, rxBw, calculateBWManExp(rxBw));
   return(_mod->SPIsetRegValue(SX127X_REG_AFC_BW, calculateBWManExp(rxBw), 4, 0));
 }
 
@@ -1175,6 +1223,7 @@ int16_t SX127x::configFSK() {
 
   // enable preamble detector
   state = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_DETECT, SX127X_PREAMBLE_DETECTOR_ON | SX127X_PREAMBLE_DETECTOR_2_BYTE | SX127X_PREAMBLE_DETECTOR_TOL);
+  //TODO REVISIT tate = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_DETECT, SX127X_PREAMBLE_DETECTOR_OFF);  //dwade was on
 
   return(state);
 }
@@ -1296,4 +1345,163 @@ int16_t SX127x::invertIQ(bool invertIQ) {
   return(state);
 }
 
+void SX127x::setDirectAction(void (*func)(void)) {
+  setDio1Action(func);
+}
+
+uint8_t SX127x::calRSSI(uint8_t knob)
+{
+	float rssi;
+
+	//dont use setRSSIConfig(1,0);
+	_mod->SPIsetRegValue(SX127X_REG_RSSI_CONFIG, 7, 2, 0);  // heavy averaging for cal.
+
+	if (knob)
+	{
+		_mod->SPIsetRegValue(SX127X_REG_RSSI_THRESH, knob);
+		Serial.printf("%s : rssi threshold set to 0x%X (%4.1f db)\n", __FUNCTION__, knob, -(float)knob/2.0);
+	}
+	else
+	{
+		Serial.printf("\n%s : starting, please wait.\n", __FUNCTION__);
+
+		for (knob = 0; knob < 255; knob++)
+		{
+		    _mod->SPIsetRegValue(SX127X_REG_RSSI_THRESH, knob);
+
+			_mod->SPIsetRegValue(SX127X_REG_IRQ_FLAGS_1, SX127X_FLAG_RSSI, 3, 3, 1, 0 );
+
+		    delay(50);
+
+			bool bflag = _mod->SPIgetRegValue(SX127X_REG_IRQ_FLAGS_1) & SX127X_FLAG_RSSI;
+
+			rssi = (float)_mod->SPIgetRegValue(SX127X_REG_RSSI_VALUE_FSK) / -2.0;
+			//Serial.printf("%s knob=0x%X (%03.1f db) flag=%d rssi = %04.1f\n", __FUNCTION__, knob, -(float)knob/2.0, bflag, rssi);
+
+			if (!bflag) continue;
+
+			// just broke the threshold, so the answer is one less.
+			knob--;
+			break;
+		}
+		// restore factory default (no squelch)
+		_mod->SPIsetRegValue(SX127X_REG_RSSI_THRESH, 0xFF);
+		Serial.printf("%s : recommending value 0x%X (%03.1f) rssi=%04.1f\n", __FUNCTION__, knob, float(knob)/2, rssi);
+
+		delay(1000);
+	}
+
+	// reset interrupt flag as best as we can.
+	_mod->SPIsetRegValue(SX127X_REG_IRQ_FLAGS_1, SX127X_FLAG_RSSI, 3, 3, 1, 0 );
+
+	return knob;
+}
+
+uint8_t SX127x::calOOK(uint8_t startval) {
+
+  bool pin_now, pin_old;
+
+  int16_t knob = 0;
+  uint32_t now;
+  uint32_t hitCtr  = 0;
+
+  setOokThresholdType(0);  //fixed I think
+
+  Serial.printf("\n%s noise free cal start\n", __FUNCTION__);
+
+  if (startval)
+  {
+	  // don't bother with cal, speed things up. supply answer
+	  setOokFixedOrFloorThreshold(startval);
+	  Serial.printf("%s : explictly set to %d\n\n", __FUNCTION__, startval);
+	  delay(500);
+	  return startval;
+  }
+
+
+  // start from zero, move to next phase after first noise detected.
+
+  for (knob = startval; knob < 128 ; knob+=7)
+  {
+	  setOokFixedOrFloorThreshold(knob);
+	  delay(100);
+
+      pin_old = digitalRead(_mod->getTx());
+
+ 	  now = micros() + 500000;	// half second in the future
+ 	  hitCtr  = 0;
+
+ 	  while (now > micros())
+ 	  {
+ 	     pin_now = digitalRead(_mod->getTx());
+ 	     if (pin_now != pin_old) goto phase2;  // oh my, a goto
+ 	  }
+	  Serial.printf("%s : knob = %d (silence)\n", __FUNCTION__, knob);
+  }
+
+phase2:
+
+  Serial.printf("\n%s : knob = %d (noise found)...looking for silence\n", __FUNCTION__, knob);
+
+  // NOW LOOK FOR SILENCE
+  for (knob; knob < 128 ; knob+=2)
+  {
+ 	setOokFixedOrFloorThreshold(knob);
+ 	delay(100);
+
+ 	pin_old = digitalRead(_mod->getTx());
+
+	now = micros() + 1000000;  // half second in the future
+ 	hitCtr	= 0;
+
+ 	while (now > micros())
+ 	{
+ 	   pin_now = digitalRead(_mod->getTx());
+
+ 	   if (pin_now == pin_old) continue;
+ 	   pin_old = pin_now;
+ 	   hitCtr++;
+ 	}
+
+ 	if (hitCtr == 0 ) break; // no noise found.
+
+ 	Serial.printf("%s : knob = %d hits = %d (noisy)\n", __FUNCTION__, knob, hitCtr);
+  }
+
+
+  // NOW LOOK FOR SILENCE AGAIN
+
+  Serial.printf("slow loop\n");
+  knob -=4;
+
+  for (knob; knob < 128 ; knob+=1)
+  {
+ 	setOokFixedOrFloorThreshold(knob);
+ 	delay(100);
+
+ 	pin_old = digitalRead(_mod->getTx());
+
+	now = micros() + 10000000;  // 10 seconds in the future
+ 	hitCtr	= 0;
+
+ 	while (now > micros())
+ 	{
+ 	   pin_now = digitalRead(_mod->getTx());
+
+ 	   if (pin_now == pin_old) continue;
+ 	   pin_old = pin_now;
+ 	   hitCtr++;
+ 	   break;
+ 	}
+
+ 	if (hitCtr == 0 ) break; // no noise found.
+
+ 	Serial.printf("%s : knob = %d hits = %d (noisy)\n", __FUNCTION__, knob, hitCtr);
+  }
+
+
+  Serial.printf("\n%s : ook floor set to %d (silence)\n",__FUNCTION__, knob);
+  delay(3000);
+  return knob;
+}
 #endif

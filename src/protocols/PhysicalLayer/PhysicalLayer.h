@@ -178,6 +178,14 @@ class PhysicalLayer {
     */
     virtual int16_t receiveDirect() = 0;
 
+    /*!
+      \brief Enables direct reception mode on pin DIO2 (data). Must be implemented in module class.
+      While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.
+
+      \returns \ref status_codes
+    */
+    virtual int16_t receiveBitDirect() = 0;
+
     // configuration methods
 
     /*!
