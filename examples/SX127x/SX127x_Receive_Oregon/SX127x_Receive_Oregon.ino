@@ -129,59 +129,6 @@ SSD1306Wire oled(0x3c, I2C_SDA, I2C_SCL);
 //static const uint8_t *charSet = Roboto_Mono_14; //Nimbus_Mono_L_Regular_16; // Roboto_Mono_48/32/14/_10;
 static const uint8_t *charSet = DejaVu_Sans_Mono_10 ; // Roboto_Mono_48/32/14/_10;
 
-#if 0
-int oprintf(const char * format,...)
-{
-  int ret;
-  char buffer[120];
-
-  va_list args;
-  va_start (args, format);
-  uint8_t charHeightPixels = pgm_read_byte(charSet + HEIGHT_POS);
-  uint8_t charWidthPixels = pgm_read_byte(charSet + WIDTH_POS);
-
-  // mod true physical to align with a char boundary
-  const uint16_t displayWidthInPixels = (oled.width() /charWidthPixels) * charWidthPixels ;
-  uint16_t displayHeightInPixels = (oled.height() / charHeightPixels) * charHeightPixels;
-
-  uint16_t maxNumHChars = max(displayWidthInPixels/charWidthPixels, 1);
-  //Serial.printf("max no chars = %d\n", maxNumHChars);
-
-  //Serial.printf("width adj=%d  real=%d\n", displayWidthInPixels, oled.width());
-  //Serial.printf("width adj=%d  real=%d\n", displayHeightInPixels, oled.height());
-
-  // THIS FUCKING SUCKS
-  ret = vsnprintf (buffer,maxNumHChars,format, args);
-#if defined JTAG_PRESENT
-  Serial.printf("%s: %s\n", __FUNCTION__, buffer);
-#endif
-
-  // erase old text
-  oled.setColor(BLACK);
-  oled.fillRect(0, vertPositionInPixels, displayWidthInPixels, charHeightPixels);
-
-  oled.setColor(WHITE);
-
-  buffer[maxNumHChars] = 0;  // truncate string if too long for font and display
-
-  oled.drawString(0, vertPositionInPixels, buffer);
-
-  //for debug. Write a boarder around the writable text region.
-  //oled.drawRect(0, 0, displayWidthInPixels, displayHeightInPixels); // logical phys disp.
-  //oled.drawRect(0, 0, oled.width(), oled.height()); // max phys disp.
-
-  oled.display();
-
-  vertPositionInPixels += charHeightPixels;
-  if (vertPositionInPixels + charHeightPixels > oled.height()) vertPositionInPixels = 0; //zero based hence >=
-
-  va_end (args);
-
-  return ret;
-}
-#endif
-
-
 int oprintf(uint8_t row, const char * format,...)
 {
     int ret = 0;
@@ -210,7 +157,6 @@ int oprintf(uint8_t row, const char * format,...)
         vertPositionInPixels = row * charHeightPixels;
 
         ret = vsnprintf (buffer, sizeof(buffer)-1,format, args);
-        //Serial.printf("kkkkkkkkkkk maxNumHChars=%d ret=%d\n", maxNumHChars, ret);
 
         // erase old text
         oled.setColor(BLACK);
