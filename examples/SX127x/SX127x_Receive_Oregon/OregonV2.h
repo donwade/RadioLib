@@ -10,7 +10,7 @@
 
 //#define SDCARD_LOGGING    #set to 1 or 0
 
-#ifndef SCARD_LOGGING
+#ifndef SDCARD_LOGGING
 #error "STOP must define above if you want SDCARD logging"
 #endif
 
