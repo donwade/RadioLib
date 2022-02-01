@@ -1,25 +1,12 @@
 #ifndef __OREGONV2__
 #define __OREGONV2__
 
+#include "Configure.h"
 #include "TypeDef.h"
 #include "Module.h"
 
 #define FULL_DEBUG 0
 #define HI_BIT64 ((uint64_t) 1 << ((sizeof(uint64_t)) * 8)-1)
-
-
-//#define SDCARD_LOGGING    #set to 1 or 0
-
-#ifndef SDCARD_LOGGING
-#error "STOP must define above if you want SDCARD logging"
-#endif
-
-#if (SDCARD_LOGGING==0)
-    #define JTAG_PRESENT 1
-#else
-    #define JTAG_PRESENT 0
-#endif
-
 
 void dumpGuinessRecords();
 void eraseOregon(void); // clear SD files

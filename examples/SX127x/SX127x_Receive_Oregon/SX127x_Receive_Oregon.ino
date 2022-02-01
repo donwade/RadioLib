@@ -43,8 +43,6 @@ typedef struct {
 // include the library
 #include <RadioLib.h>
 
-#define ERASE_SD_ONPOWERUP 0
-
 #define GREEN_LED       25 // TTGO GPIO25
 #define DUMB_433_INPUT  34   // OREGON DIRECT on chip
 
@@ -166,7 +164,7 @@ int oprintf(uint8_t row, const char * format,...)
 
         buffer[min(ret, maxNumHChars-1)] = 0;  // truncate string if too long for font and display
 
-#if defined JTAG_PRESENT
+#if JTAG_PRESENT
         Serial.printf("%s(%d)(%d vs %d): %s\n", __FUNCTION__, row, ret, maxNumHChars-1, buffer);
 #endif
         oled.drawString(0, vertPositionInPixels, buffer);
@@ -242,14 +240,15 @@ int setOLED(void)
 
     oled.setTextAlignment(TEXT_ALIGN_LEFT);
     oled.setFont(charSet);
-    oprintf(1,"built on:");
-    oprintf(2,__DATE__" "__TIME__);
+    oprintf(0,"Built: %s", __DATE__);
+    oprintf(1,"Wifi is %s", WIFI_AVAILABLE ? "ENABLED" : "DISABLED");
+    oprintf(2,"SD log=%s JTAG=%s", SDCARD_LOGGING ? "ON":"OFF", SDCARD_LOGGING ? "OFF":"ON");
 
 #if 0
-    // test extended character set (nothing b/n 0x80-0x9F)
+    // test extended character set (now chars at 0x80-0x9F)
     for (int i = 0xA0; i < 0x100; i++)
     {
-        oprintf("%02X=%c", i, i);
+        oprintf(1,"%02X=%c", i, i);
         oled.display();
         delay(500);
     }
@@ -758,7 +757,7 @@ void setup() {
   Serial.println(bFoundDumb433 ? BOOT_MSG1 : BOOT_MSG2);
 
   setupWiFi();  // setup the time first.
-
+  
 #if !JTAG_PRESENT
   setupFS();    // fs needs time from wifi.
 

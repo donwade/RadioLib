@@ -174,7 +174,7 @@ static bool SD_CARD_OK = false;
 
 void setupFS(){
 
-#if JTAG_PRESENT
+#if !SDCARD_LOGGING
 	Serial.printf("%s: setup 4 SD card skipped, JTAG allowed\n");
 	return;
 #else
@@ -259,7 +259,7 @@ int fgets(File &fs, char *pArray, uint16_t arraySize){
 //-----------------------------------------
 void dumpGuinessRecords()
 {
-#if JTAG_PRESENT
+#if !SDCARD_LOGGING
 	return;
 #endif
 
@@ -303,7 +303,7 @@ int log2SD ( const char * format, ... )
 
   ret = vsnprintf (buffer,sizeof(buffer),format, args);
 
-#if JTAG_PRESENT
+#if !SDCARD_LOGGING
     Serial.println(buffer);
 #else
   appendFile(SD, LOG_FILE, buffer);
@@ -316,7 +316,7 @@ int log2SD ( const char * format, ... )
 
 void eraseOregon(void)
 {
-#if JTAG_PRESENT
+#if SDCARD_LOGGING
 	Serial.println("erasing SD card in 5 seconds");
 	delay(5000);
 	deleteFile( SD, LOG_FILE);

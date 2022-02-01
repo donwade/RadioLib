@@ -1,18 +1,7 @@
 #include <time.h>
 #include <Udp.h>
 #include <WiFi.h>
-#include "wificonfig.h"
-
-#ifndef ssid
-	#error "you forgot ssid define in wificonfig.h"
-#endif
-#ifndef password
-    #error "you forgot password define in wificonfig.h"
-#endif
-
-// or
-//const char* ssid       = "whitehouse";
-//const char* password   = "joebiden341";
+#include "Configure.h"
 
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = -3600 * 5;
@@ -33,24 +22,30 @@ void printLocalTime()
 
 void setupWiFi()
 {
+#if WIFI_AVAILABLE
 
   //connect to WiFi
-  Serial.printf("Connecting to %s ", ssid);
-  WiFi.begin(ssid, password);
+  Serial.printf("Connecting to %s ", MY_SSID);
+  WiFi.begin(MY_SSID, MY_SSID);
 
   while (WiFi.status() != WL_CONNECTED) {
       delay(500);
       Serial.print(".");
   }
 
-  Serial.printf(" CONNECTED to %s\n", ssid);
+  Serial.printf(" CONNECTED to %s\n", MY_SSID);
 
   //init and get the time
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-  printLocalTime();
 
   //disconnect WiFi as it's no longer needed
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
+#else
+  Serial.printf("%s: Configured for no wifi\n", __FUNCTION__);
+  delay(2000);
+#endif
+
+  printLocalTime();
 }
 
