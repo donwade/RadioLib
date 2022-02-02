@@ -30,7 +30,5 @@
 //see https://remotemonitoringsystems.ca/time-zone-abbreviations.php
 #define TZ_INFO  "EST5EDT"
 
-// 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
-
 #endif  //__DEFINES_H__
 
