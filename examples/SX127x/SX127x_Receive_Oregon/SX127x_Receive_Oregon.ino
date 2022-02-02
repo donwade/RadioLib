@@ -241,7 +241,7 @@ int setOLED(void)
     oled.setTextAlignment(TEXT_ALIGN_LEFT);
     oled.setFont(charSet);
     oprintf(0,"Built: %s", __DATE__);
-    oprintf(1,"Wifi is %s", WIFI_AVAILABLE ? "ENABLED" : "DISABLED");
+    oprintf(1,"Wifi is:%s", MY_SSID);
     oprintf(2,"SD log=%s JTAG=%s", SDCARD_LOGGING ? "ON":"OFF", SDCARD_LOGGING ? "OFF":"ON");
 
 #if 0

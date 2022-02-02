@@ -175,7 +175,8 @@ static bool SD_CARD_OK = false;
 void setupFS(){
 
 #if !SDCARD_LOGGING
-	Serial.printf("%s: setup 4 SD card skipped, JTAG allowed\n");
+	Serial.printf("\n%s: setup 4 SD card skipped, JTAG allowed\n");
+	delay(3000);
 	return;
 #else
 
