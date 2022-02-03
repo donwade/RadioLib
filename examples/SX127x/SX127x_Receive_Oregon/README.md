@@ -14,9 +14,10 @@
 
    Uses highly evil C-bit packed structures for decoding packets. Its aligned for esp32
    so no more shift and mask and pray operations. I may have thrown a goto statement (in
-   there to bait someone into a why goto statements are bad argument).
+   there to bait someone into a why goto statements are a NOT bad argument).
 
-   Not all OS devices are supported, but once you see one sensor is done its easy to add others.
+   Not all OS devices are supported, but once you see one sensor is done its easy to add others. 
+   ![visual](IMG_1454.jpg)
 
 ### _One radio library to rule them all!_
 
