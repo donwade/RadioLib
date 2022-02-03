@@ -1,4 +1,4 @@
-=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2022.02.02 14:54:52 =~=~=~=~=~=~=~=~=~=~=~=
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2022.02.03 16:56:40 =~=~=~=~=~=~=~=~=~=~=~=
 checking pin 34 for dumb 433 device
 hit ctr 0
 CPU0 reset reason: 
@@ -10,8 +10,8 @@ reset value = 14 EXT_CPU_RESET
 using SX1726 lora chip output pin 32
 Connecting to ignite wifi [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 0 - WIFI_READY
 [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 2 - STA_START
-....[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 4 - STA_CONNECTED
-[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 7 - STA_GOT_IP
+.....[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 4 - STA_CONNECTED
+.[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 7 - STA_GOT_IP
 [D][WiFiGeneric.cpp:419] _eventCallback(): STA IP: 10.0.0.225, MASK: 255.255.255.0, GW: 10.0.0.1
 .
 
@@ -19,36 +19,74 @@ CONNECTED to ignite wifi
 
 getting NTP from time.nist.gov
 
- ...Wed  02-02-22 14:54:58
+ ........Thu  03-02-22 16:56:48
+[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 5 - STA_DISCONNECTED
 [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 3 - STA_STOP
-[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 3 - STA_STOP
-Wednesday, February 02 2022 14:54:58
+Thursday, February 03 2022 16:56:48
+[W][sd_diskio.cpp:101] sdWait(): Wait Failed
+[E][sd_diskio.cpp:123] sdSelectCard(): Select Failed
 [W][sd_diskio.cpp:175] sdCommand(): crc error
+[W][sd_diskio.cpp:181] sdCommand(): token error [0] 0x5
+[W][sd_diskio.cpp:505] ff_sd_initialize(): GO_IDLE_STATE failed
+[E][sd_diskio.cpp:775] sdcard_mount(): f_mount failed: (3) The physical drive cannot work
+Card Mount Failed
+assertion "setupFS == 0" failed: file "/tmp/arduino-sketch-D1BD0E4767D2B75971970D6FEBE0B99B/sketch/SD_ttgo.cpp", line 189, function: void setupFS()
+abort() was called at PC 0x4010800b on core 1
+
+ELF file SHA256: 0000000000000000
+
+Backtrace: 0x4008ad68:0x3ffb1ea0 0x4008afe5:0x3ffb1ec0 0x4010800b:0x3ffb1ee0 0x400d20f6:0x3ffb1f10 0x400d4106:0x3ffb1f50 0x400ed4d9:0x3ffb1fa0 0x4008bff6:0x3ffb1fd0
+
+Rebooting...
+ets Jun  8 2016 00:22:57
+
+rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 188777542, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:1
+load:0x3fff0018,len:4
+load:0x3fff001c,len:1044
+load:0x40078000,len:10124
+load:0x40080400,len:5856
+entry 0x400806a8
+checking pin 34 for dumb 433 device
+hit ctr 0
+CPU0 reset reason: 
+reset value = 12 SW_CPU_RESET
+CPU0 reset reason: 
+reset value = 12 SW_CPU_RESET
+CPU1 reset reason: 
+reset value = 12 SW_CPU_RESET
+using SX1726 lora chip output pin 32
+Connecting to ignite wifi [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 0 - WIFI_READY
+[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 2 - STA_START
+....[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 4 - STA_CONNECTED
+.[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 7 - STA_GOT_IP
+[D][WiFiGeneric.cpp:419] _eventCallback(): STA IP: 10.0.0.225, MASK: 255.255.255.0, GW: 10.0.0.1
+.
+
+CONNECTED to ignite wifi
+
+getting NTP from time.nist.gov
+
+ .Thu  03-02-22 16:56:58
+[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 3 - STA_STOP
+[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 3 - STA_STOP
+Thursday, February 03 2022 16:56:58
 SD card ready.
 SD Card Type: SDSC
 SD Card Size: 1876MB
 Total space: 1871MB
 Used space: 1MB
 checking GPIO35 = 1, NOT erasing SD card
+erasing SD card in 5 seconds
+Deleting file: /Oregon.log
+File deleted
+Writing file: /Oregon.log
+File written
+SD card erased
+erase done. Waiting for GPIO35 to be released
 Reading file: /Oregon.log
-X 1643831095  02-02 14:44 | RssiCalibrateThread setting hi    = 0xBF (-95.5 db) 
-X 1643831105  02-02 14:45 | RssiCalibrateThread setting lo    = 0xBD (-94.5 db) 
-X 1643831105  02-02 14:45 | RssiCalibrateThread setting final = 0xBF (-95.5 db) 
-X 1643831155  02-02 14:45 | RssiCalibrateThread setting hi    = 0xBF (-95.5 db) 
-X 1643831166  02-02 14:46 | RssiCalibrateThread setting lo    = 0xBF (-95.5 db) 
-X 1643831166  02-02 14:46 | RssiCalibrateThread setting final = 0xBF (-95.5 db) 
-X 1643831209  02-02 14:46 | OokCalibrateThread setting hi end = 0x4D (-38.5 db) 
-X 1643831247  02-02 14:47 | OokCalibrateThread setting lo end = 0x4C (-38.0 db) 
-X 1643831248  02-02 14:47 | OokCalibrateThread setting final  = 0x4D (-38.5 db) 
-R dev=0xF824 ch=01 1643831270  02-02 14:47  +3.2 degC * lo 02-02 14:47  +3.2 degC * hi  02-02 14:47  +3.2 degC * hum=63| 0 mS 
-R dev=0xF824 ch=02 1643831271  02-02 14:47  +3.1 degC * lo 02-02 14:47  +3.1 degC * hi  02-02 14:47  +3.1 degC * hum=62| 0 mS 
-R dev=0x2914 ch=00 1643831274  02-02 14:47 +00.0 mm/s | pk 02-02 14:47 +00.0 mm/S * tot 02-02 14:47 +39.0 mm   | 0 mS 
-R dev=0xF824 ch=05 1643831278  02-02 14:47 +21.7 degC * lo 02-02 14:47 +21.7 degC * hi  02-02 14:47 +21.7 degC * hum=34| 0 mS 
-R dev=0xF824 ch=04 1643831305  02-02 14:48 -70.0 degC * lo 02-02 14:48 -70.0 degC * hi  02-02 14:48 -70.0 degC * hum=02| 0 mS 
-R dev=0xF824 ch=05 1643831349  02-02 14:49 +21.8 degC | lo 02-02 14:47 +21.7 degC * hi  02-02 14:49 +21.8 degC | hum=34| 70998 mS 
-R dev=0xF824 ch=01 1643831376  02-02 14:49  +3.1 degC * lo 02-02 14:49  +3.1 degC | hi  02-02 14:47  +3.2 degC | hum=63| 53022 mS 
-R dev=0xF824 ch=01 1643831429  02-02 14:50  +3.1 degC | lo 02-02 14:49  +3.1 degC | hi  02-02 14:47  +3.2 degC * hum=64| 53021 mS 
-R dev=0xF824 ch=02 1643831448  02-02 14:50  +3.2 degC | lo 02-02 14:47  +3.1 degC * hi  02-02 14:50  +3.2 degC | hum=61| 59000 mS 
 1061160524 done.
 [SX1278] Initializing ... calculateBWManExp : m=2 e=7 est= 2.6 tgt=249.0
 calculateBWManExp : m=1 e=7 est= 3.1 tgt=249.0
@@ -153,18 +191,18 @@ DATA task running
 OokCalibrateThread active
 
 calRSSI : starting, please wait.
-calRSSI : recommending value 0xBA (93.0) rssi=-92.5
-X 1643831710  02-02 14:55 | RssiCalibrateThread setting hi    = 0xBA (-93.0 db) 
+calRSSI : recommending value 0xBA (93.0) rssi=-93.5
+X 1643925437  02-03 16:57 | RssiCalibrateThread setting hi    = 0xBA (-93.0 db) 
 
 
 setFrequency to 432.552002
 
 calRSSI : starting, please wait.
-calRSSI : recommending value 0xB8 (92.0) rssi=-92.5
-X 1643831721  02-02 14:55 | RssiCalibrateThread setting lo    = 0xB8 (-92.0 db) 
+calRSSI : recommending value 0xB7 (91.5) rssi=-94.0
+X 1643925447  02-03 16:57 | RssiCalibrateThread setting lo    = 0xB7 (-91.5 db) 
 
 calRSSI : rssi threshold set to 0xBA (-93.0 db)
-X 1643831721  02-02 14:55 | RssiCalibrateThread setting final = 0xBA (-93.0 db) 
+X 1643925447  02-03 16:57 | RssiCalibrateThread setting final = 0xBA (-93.0 db) 
 
 
 setFrequency to 433.920013
@@ -183,32 +221,31 @@ calOOK : knob = 35 (silence)
 calOOK : knob = 42 (silence)
 
 calOOK : knob = 49 (noise found)...looking for silence
-calOOK : knob = 49 hits = 50 (noisy)
-calOOK : knob = 51 hits = 98 (noisy)
-calOOK : knob = 53 hits = 572 (noisy)
-calOOK : knob = 55 hits = 828 (noisy)
-calOOK : knob = 57 hits = 2694 (noisy)
-calOOK : knob = 59 hits = 4740 (noisy)
-calOOK : knob = 61 hits = 6120 (noisy)
-calOOK : knob = 63 hits = 7009 (noisy)
-calOOK : knob = 65 hits = 6551 (noisy)
-calOOK : knob = 67 hits = 5171 (noisy)
-calOOK : knob = 69 hits = 2694 (noisy)
-calOOK : knob = 71 hits = 1224 (noisy)
-calOOK : knob = 73 hits = 502 (noisy)
-calOOK : knob = 75 hits = 220 (noisy)
-calOOK : knob = 77 hits = 46 (noisy)
+calOOK : knob = 49 hits = 64 (noisy)
+calOOK : knob = 51 hits = 134 (noisy)
+calOOK : knob = 53 hits = 498 (noisy)
+calOOK : knob = 55 hits = 1652 (noisy)
+calOOK : knob = 57 hits = 3624 (noisy)
+calOOK : knob = 59 hits = 5242 (noisy)
+calOOK : knob = 61 hits = 6919 (noisy)
+calOOK : knob = 63 hits = 7566 (noisy)
+calOOK : knob = 65 hits = 6212 (noisy)
+calOOK : knob = 67 hits = 3289 (noisy)
+calOOK : knob = 69 hits = 1826 (noisy)
+calOOK : knob = 71 hits = 644 (noisy)
+calOOK : knob = 73 hits = 168 (noisy)
+calOOK : knob = 75 hits = 24 (noisy)
 slow loop
+calOOK : knob = 73 hits = 1 (noisy)
+calOOK : knob = 74 hits = 1 (noisy)
 calOOK : knob = 75 hits = 1 (noisy)
 calOOK : knob = 76 hits = 1 (noisy)
 calOOK : knob = 77 hits = 1 (noisy)
 calOOK : knob = 78 hits = 1 (noisy)
 calOOK : knob = 79 hits = 1 (noisy)
-calOOK : knob = 80 hits = 1 (noisy)
-calOOK : knob = 81 hits = 1 (noisy)
 
-calOOK : ook floor set to 82 (silence)
-X 1643831765  02-02 14:56 | OokCalibrateThread setting hi end = 0x52 (-41.0 db) 
+calOOK : ook floor set to 80 (silence)
+X 1643925489  02-03 16:58 | OokCalibrateThread setting hi end = 0x50 (-40.0 db) 
 
 
 setFrequency to 432.552002
@@ -223,101 +260,6 @@ calOOK : knob = 35 (silence)
 calOOK : knob = 42 (silence)
 
 calOOK : knob = 49 (noise found)...looking for silence
-calOOK : knob = 49 hits = 14 (noisy)
-calOOK : knob = 51 hits = 34 (noisy)
-calOOK : knob = 53 hits = 196 (noisy)
-calOOK : knob = 55 hits = 696 (noisy)
-calOOK : knob = 57 hits = 1959 (noisy)
-calOOK : knob = 59 hits = 4068 (noisy)
-calOOK : knob = 61 hits = 5690 (noisy)
-calOOK : knob = 63 hits = 6939 (noisy)
-calOOK : knob = 65 hits = 7003 (noisy)
-calOOK : knob = 67 hits = 5832 (noisy)
-calOOK : knob = 69 hits = 3772 (noisy)
-calOOK : knob = 71 hits = 2100 (noisy)
-calOOK : knob = 73 hits = 1182 (noisy)
-calOOK : knob = 75 hits = 362 (noisy)
-calOOK : knob = 77 hits = 36 (noisy)
-calOOK : knob = 79 hits = 2 (noisy)
-slow loop
-calOOK : knob = 77 hits = 1 (noisy)
-calOOK : knob = 78 hits = 1 (noisy)
-calOOK : knob = 79 hits = 1 (noisy)
-calOOK : knob = 80 hits = 1 (noisy)
-calOOK : knob = 81 hits = 1 (noisy)
-calOOK : knob = 82 hits = 1 (noisy)
-
-calOOK : ook floor set to 83 (silence)
-X 1643831811  02-02 14:56 | OokCalibrateThread setting lo end = 0x53 (-41.5 db) 
-
-
-setFrequency to 433.920013
-
-calOOK noise free cal start
-calOOK : explictly set to 83
-
-X 1643831812  02-02 14:56 | OokCalibrateThread setting final  = 0x53 (-41.5 db) 
-
-OokCalibrateThread sleep ----------
-[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 8 - STA_LOST_IP
-4539000000204192.3B2700
-SUM PASS given = 0x27 vs calc = 0x27
-CRC PASS given = 0x3B vs calc = 0x3B
-parsePCR800 channel : 0
-parsePCR800 rate    : +0.0 mm/hr
-parsePCR800 total   : +39.0 mm
-R dev=0x2914 ch=00 1643831838  02-02 14:57 +00.0 mm/s | pk 02-02 14:57 +00.0 mm/S * tot 02-02 14:57 +39.0 mm   | 0 mS 
-
-----------------------
-E80247000CC4428F.964
-SUM PASS given = 0x4E vs calc = 0x4E
-CRC PASS given = 0x96 vs calc = 0x96
-parseTHGR810 channel : 4
-parseTHGR810 humidity: 2
-parseTHGR810 temp    : -70.0
-R dev=0xF824 ch=04 1643831841  02-02 14:57 -70.0 degC * lo 02-02 14:57 -70.0 degC * hi  02-02 14:57 -70.0 degC * hum=02% | 0 mS 
-
-----------------------
-983402170D15428F.54
-SUM PASS given = 0x49 vs calc = 0x49
-CRC PASS given = 0x5 vs calc = 0x5
-parseTHGR810 channel : 5
-parseTHGR810 humidity: 34
-parseTHGR810 temp    : +21.7
-R dev=0xF824 ch=05 1643831846  02-02 14:57 +21.7 degC * lo 02-02 14:57 +21.7 degC * hi  02-02 14:57 +21.7 degC * hum=34% | 0 mS 
-
-----------------------
-63003205F1428F.BC4
-SUM PASS given = 0x40 vs calc = 0x40
-CRC PASS given = 0xBC vs calc = 0xBC
-parseTHGR810 channel : 1
-parseTHGR810 humidity: 63
-parseTHGR810 temp    : +3.2
-R dev=0xF824 ch=01 1643831853  02-02 14:57  +3.2 degC * lo 02-02 14:57  +3.2 degC * hi  02-02 14:57  +3.2 degC * hum=63% | 0 mS 
-
-----------------------
-A06100304A32428F.353
-SUM PASS given = 0x3A vs calc = 0x3A
-CRC PASS given = 0x35 vs calc = 0x35
-parseTHGR810 channel : 2
-parseTHGR810 humidity: 61
-parseTHGR810 temp    : +3.0
-R dev=0xF824 ch=02 1643831861  02-02 14:57  +3.0 degC * lo 02-02 14:57  +3.0 degC * hi  02-02 14:57  +3.0 degC * hum=61% | 0 mS 
-
-----------------------
-4539000000204192.3B2700
-SUM PASS given = 0x27 vs calc = 0x27
-CRC PASS given = 0x3B vs calc = 0x3B
-parsePCR800 channel : 0
-parsePCR800 rate    : +0.0 mm/hr
-parsePCR800 total   : +39.0 mm
-no change since last report
-----------------------
-F063003105F1428F.863
-SUM PASS given = 0x3F vs calc = 0x3F
-CRC PASS given = 0x86 vs calc = 0x86
-parseTHGR810 channel : 1
-parseTHGR810 humidity: 63
-parseTHGR810 temp    : +3.1
-R dev=0xF824 ch=01 1643831906  02-02 14:58  +3.1 degC * lo 02-02 14:58  +3.1 degC | hi  02-02 14:57  +3.2 degC | hum=63% | 53022 mS 
-
+calOOK : knob = 49 hits = 12 (noisy)
+calOOK : knob = 51 hits = 42 (noisy)
+calOOK : knob = 53 hits = 214 (noisy)

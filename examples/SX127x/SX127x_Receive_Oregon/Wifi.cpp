@@ -1,7 +1,6 @@
 #include <time.h>
 #include <Udp.h>
 #include <WiFi.h>
-#include <ESP32Ping.h>
 #include "Configure.h"
 
 //---------------------------------------
