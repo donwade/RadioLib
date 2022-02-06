@@ -1,4 +1,4 @@
-=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2022.02.03 16:56:40 =~=~=~=~=~=~=~=~=~=~=~=
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2022.02.06 16:04:20 =~=~=~=~=~=~=~=~=~=~=~=
 checking pin 34 for dumb 433 device
 hit ctr 0
 CPU0 reset reason: 
@@ -7,56 +7,6 @@ CPU0 reset reason:
 reset value = 1 POWERON_RESET
 CPU1 reset reason: 
 reset value = 14 EXT_CPU_RESET
-using SX1726 lora chip output pin 32
-Connecting to ignite wifi [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 0 - WIFI_READY
-[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 2 - STA_START
-.....[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 4 - STA_CONNECTED
-.[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 7 - STA_GOT_IP
-[D][WiFiGeneric.cpp:419] _eventCallback(): STA IP: 10.0.0.225, MASK: 255.255.255.0, GW: 10.0.0.1
-.
-
-CONNECTED to ignite wifi
-
-getting NTP from time.nist.gov
-
- ........Thu  03-02-22 16:56:48
-[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 5 - STA_DISCONNECTED
-[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 3 - STA_STOP
-Thursday, February 03 2022 16:56:48
-[W][sd_diskio.cpp:101] sdWait(): Wait Failed
-[E][sd_diskio.cpp:123] sdSelectCard(): Select Failed
-[W][sd_diskio.cpp:175] sdCommand(): crc error
-[W][sd_diskio.cpp:181] sdCommand(): token error [0] 0x5
-[W][sd_diskio.cpp:505] ff_sd_initialize(): GO_IDLE_STATE failed
-[E][sd_diskio.cpp:775] sdcard_mount(): f_mount failed: (3) The physical drive cannot work
-Card Mount Failed
-assertion "setupFS == 0" failed: file "/tmp/arduino-sketch-D1BD0E4767D2B75971970D6FEBE0B99B/sketch/SD_ttgo.cpp", line 189, function: void setupFS()
-abort() was called at PC 0x4010800b on core 1
-
-ELF file SHA256: 0000000000000000
-
-Backtrace: 0x4008ad68:0x3ffb1ea0 0x4008afe5:0x3ffb1ec0 0x4010800b:0x3ffb1ee0 0x400d20f6:0x3ffb1f10 0x400d4106:0x3ffb1f50 0x400ed4d9:0x3ffb1fa0 0x4008bff6:0x3ffb1fd0
-
-Rebooting...
-ets Jun  8 2016 00:22:57
-
-rst:0xc (SW_CPU_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-configsip: 188777542, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DIO, clock div:1
-load:0x3fff0018,len:4
-load:0x3fff001c,len:1044
-load:0x40078000,len:10124
-load:0x40080400,len:5856
-entry 0x400806a8
-checking pin 34 for dumb 433 device
-hit ctr 0
-CPU0 reset reason: 
-reset value = 12 SW_CPU_RESET
-CPU0 reset reason: 
-reset value = 12 SW_CPU_RESET
-CPU1 reset reason: 
-reset value = 12 SW_CPU_RESET
 using SX1726 lora chip output pin 32
 Connecting to ignite wifi [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 0 - WIFI_READY
 [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 2 - STA_START
@@ -69,10 +19,11 @@ CONNECTED to ignite wifi
 
 getting NTP from time.nist.gov
 
- .Thu  03-02-22 16:56:58
+ ....Sun  06-02-22 16:04:26
 [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 3 - STA_STOP
 [D][WiFiGeneric.cpp:374] _eventCallback(): Event: 3 - STA_STOP
-Thursday, February 03 2022 16:56:58
+Sunday, February 06 2022 16:04:26
+[W][sd_diskio.cpp:175] sdCommand(): crc error
 SD card ready.
 SD Card Type: SDSC
 SD Card Size: 1876MB
@@ -88,72 +39,72 @@ SD card erased
 erase done. Waiting for GPIO35 to be released
 Reading file: /Oregon.log
 1061160524 done.
-[SX1278] Initializing ... calculateBWManExp : m=2 e=7 est= 2.6 tgt=249.0
-calculateBWManExp : m=1 e=7 est= 3.1 tgt=249.0
-calculateBWManExp : m=0 e=7 est= 3.9 tgt=249.0
-calculateBWManExp : m=2 e=6 est= 5.2 tgt=249.0
-calculateBWManExp : m=1 e=6 est= 6.2 tgt=249.0
-calculateBWManExp : m=0 e=6 est= 7.8 tgt=249.0
-calculateBWManExp : m=2 e=5 est=10.4 tgt=249.0
-calculateBWManExp : m=1 e=5 est=12.5 tgt=249.0
-calculateBWManExp : m=0 e=5 est=15.6 tgt=249.0
-calculateBWManExp : m=2 e=4 est=20.8 tgt=249.0
-calculateBWManExp : m=1 e=4 est=25.0 tgt=249.0
-calculateBWManExp : m=0 e=4 est=31.2 tgt=249.0
-calculateBWManExp : m=2 e=3 est=41.7 tgt=249.0
-calculateBWManExp : m=1 e=3 est=50.0 tgt=249.0
-calculateBWManExp : m=0 e=3 est=62.5 tgt=249.0
-calculateBWManExp : m=2 e=2 est=83.3 tgt=249.0
-calculateBWManExp : m=1 e=2 est=100.0 tgt=249.0
-calculateBWManExp : m=0 e=2 est=125.0 tgt=249.0
-calculateBWManExp : m=2 e=1 est=166.7 tgt=249.0
-calculateBWManExp : m=1 e=1 est=200.0 tgt=249.0
-calculateBWManExp : m=0 e=1 est=250.0 tgt=249.0
+[SX1278] Initializing ... calculateBWManExp : m=2 e=7 est= 2.6 tgt=250.0
+calculateBWManExp : m=1 e=7 est= 3.1 tgt=250.0
+calculateBWManExp : m=0 e=7 est= 3.9 tgt=250.0
+calculateBWManExp : m=2 e=6 est= 5.2 tgt=250.0
+calculateBWManExp : m=1 e=6 est= 6.2 tgt=250.0
+calculateBWManExp : m=0 e=6 est= 7.8 tgt=250.0
+calculateBWManExp : m=2 e=5 est=10.4 tgt=250.0
+calculateBWManExp : m=1 e=5 est=12.5 tgt=250.0
+calculateBWManExp : m=0 e=5 est=15.6 tgt=250.0
+calculateBWManExp : m=2 e=4 est=20.8 tgt=250.0
+calculateBWManExp : m=1 e=4 est=25.0 tgt=250.0
+calculateBWManExp : m=0 e=4 est=31.2 tgt=250.0
+calculateBWManExp : m=2 e=3 est=41.7 tgt=250.0
+calculateBWManExp : m=1 e=3 est=50.0 tgt=250.0
+calculateBWManExp : m=0 e=3 est=62.5 tgt=250.0
+calculateBWManExp : m=2 e=2 est=83.3 tgt=250.0
+calculateBWManExp : m=1 e=2 est=100.0 tgt=250.0
+calculateBWManExp : m=0 e=2 est=125.0 tgt=250.0
+calculateBWManExp : m=2 e=1 est=166.7 tgt=250.0
+calculateBWManExp : m=1 e=1 est=200.0 tgt=250.0
+calculateBWManExp : m=0 e=1 est=250.0 tgt=250.0
 bw calc pass
-setAFCBandwidth : rxBw = 249.000000 calcReg = 0x01
-calculateBWManExp : m=2 e=7 est= 2.6 tgt=249.0
-calculateBWManExp : m=1 e=7 est= 3.1 tgt=249.0
-calculateBWManExp : m=0 e=7 est= 3.9 tgt=249.0
-calculateBWManExp : m=2 e=6 est= 5.2 tgt=249.0
-calculateBWManExp : m=1 e=6 est= 6.2 tgt=249.0
-calculateBWManExp : m=0 e=6 est= 7.8 tgt=249.0
-calculateBWManExp : m=2 e=5 est=10.4 tgt=249.0
-calculateBWManExp : m=1 e=5 est=12.5 tgt=249.0
-calculateBWManExp : m=0 e=5 est=15.6 tgt=249.0
-calculateBWManExp : m=2 e=4 est=20.8 tgt=249.0
-calculateBWManExp : m=1 e=4 est=25.0 tgt=249.0
-calculateBWManExp : m=0 e=4 est=31.2 tgt=249.0
-calculateBWManExp : m=2 e=3 est=41.7 tgt=249.0
-calculateBWManExp : m=1 e=3 est=50.0 tgt=249.0
-calculateBWManExp : m=0 e=3 est=62.5 tgt=249.0
-calculateBWManExp : m=2 e=2 est=83.3 tgt=249.0
-calculateBWManExp : m=1 e=2 est=100.0 tgt=249.0
-calculateBWManExp : m=0 e=2 est=125.0 tgt=249.0
-calculateBWManExp : m=2 e=1 est=166.7 tgt=249.0
-calculateBWManExp : m=1 e=1 est=200.0 tgt=249.0
-calculateBWManExp : m=0 e=1 est=250.0 tgt=249.0
+setAFCBandwidth : rxBw = 250.000000 calcReg = 0x01
+calculateBWManExp : m=2 e=7 est= 2.6 tgt=250.0
+calculateBWManExp : m=1 e=7 est= 3.1 tgt=250.0
+calculateBWManExp : m=0 e=7 est= 3.9 tgt=250.0
+calculateBWManExp : m=2 e=6 est= 5.2 tgt=250.0
+calculateBWManExp : m=1 e=6 est= 6.2 tgt=250.0
+calculateBWManExp : m=0 e=6 est= 7.8 tgt=250.0
+calculateBWManExp : m=2 e=5 est=10.4 tgt=250.0
+calculateBWManExp : m=1 e=5 est=12.5 tgt=250.0
+calculateBWManExp : m=0 e=5 est=15.6 tgt=250.0
+calculateBWManExp : m=2 e=4 est=20.8 tgt=250.0
+calculateBWManExp : m=1 e=4 est=25.0 tgt=250.0
+calculateBWManExp : m=0 e=4 est=31.2 tgt=250.0
+calculateBWManExp : m=2 e=3 est=41.7 tgt=250.0
+calculateBWManExp : m=1 e=3 est=50.0 tgt=250.0
+calculateBWManExp : m=0 e=3 est=62.5 tgt=250.0
+calculateBWManExp : m=2 e=2 est=83.3 tgt=250.0
+calculateBWManExp : m=1 e=2 est=100.0 tgt=250.0
+calculateBWManExp : m=0 e=2 est=125.0 tgt=250.0
+calculateBWManExp : m=2 e=1 est=166.7 tgt=250.0
+calculateBWManExp : m=1 e=1 est=200.0 tgt=250.0
+calculateBWManExp : m=0 e=1 est=250.0 tgt=250.0
 bw calc pass
-calculateBWManExp : m=2 e=7 est= 2.6 tgt=249.0
-calculateBWManExp : m=1 e=7 est= 3.1 tgt=249.0
-calculateBWManExp : m=0 e=7 est= 3.9 tgt=249.0
-calculateBWManExp : m=2 e=6 est= 5.2 tgt=249.0
-calculateBWManExp : m=1 e=6 est= 6.2 tgt=249.0
-calculateBWManExp : m=0 e=6 est= 7.8 tgt=249.0
-calculateBWManExp : m=2 e=5 est=10.4 tgt=249.0
-calculateBWManExp : m=1 e=5 est=12.5 tgt=249.0
-calculateBWManExp : m=0 e=5 est=15.6 tgt=249.0
-calculateBWManExp : m=2 e=4 est=20.8 tgt=249.0
-calculateBWManExp : m=1 e=4 est=25.0 tgt=249.0
-calculateBWManExp : m=0 e=4 est=31.2 tgt=249.0
-calculateBWManExp : m=2 e=3 est=41.7 tgt=249.0
-calculateBWManExp : m=1 e=3 est=50.0 tgt=249.0
-calculateBWManExp : m=0 e=3 est=62.5 tgt=249.0
-calculateBWManExp : m=2 e=2 est=83.3 tgt=249.0
-calculateBWManExp : m=1 e=2 est=100.0 tgt=249.0
-calculateBWManExp : m=0 e=2 est=125.0 tgt=249.0
-calculateBWManExp : m=2 e=1 est=166.7 tgt=249.0
-calculateBWManExp : m=1 e=1 est=200.0 tgt=249.0
-calculateBWManExp : m=0 e=1 est=250.0 tgt=249.0
+calculateBWManExp : m=2 e=7 est= 2.6 tgt=250.0
+calculateBWManExp : m=1 e=7 est= 3.1 tgt=250.0
+calculateBWManExp : m=0 e=7 est= 3.9 tgt=250.0
+calculateBWManExp : m=2 e=6 est= 5.2 tgt=250.0
+calculateBWManExp : m=1 e=6 est= 6.2 tgt=250.0
+calculateBWManExp : m=0 e=6 est= 7.8 tgt=250.0
+calculateBWManExp : m=2 e=5 est=10.4 tgt=250.0
+calculateBWManExp : m=1 e=5 est=12.5 tgt=250.0
+calculateBWManExp : m=0 e=5 est=15.6 tgt=250.0
+calculateBWManExp : m=2 e=4 est=20.8 tgt=250.0
+calculateBWManExp : m=1 e=4 est=25.0 tgt=250.0
+calculateBWManExp : m=0 e=4 est=31.2 tgt=250.0
+calculateBWManExp : m=2 e=3 est=41.7 tgt=250.0
+calculateBWManExp : m=1 e=3 est=50.0 tgt=250.0
+calculateBWManExp : m=0 e=3 est=62.5 tgt=250.0
+calculateBWManExp : m=2 e=2 est=83.3 tgt=250.0
+calculateBWManExp : m=1 e=2 est=100.0 tgt=250.0
+calculateBWManExp : m=0 e=2 est=125.0 tgt=250.0
+calculateBWManExp : m=2 e=1 est=166.7 tgt=250.0
+calculateBWManExp : m=1 e=1 est=200.0 tgt=250.0
+calculateBWManExp : m=0 e=1 est=250.0 tgt=250.0
 bw calc pass
 success!
 [0x01] set to 0x01 in bits 2-0STANDBY
@@ -181,35 +132,38 @@ success!
 [0x01] set to 0x05 in bits 2-0RECIEVE enabled
 [0x0D] set to 0x08 in bits 3-3LNA gain controlled by AGC (=1)
 manualProgram status = -16
-******* frequency = 435.287994 Mhz  bw = 249.000000 Khz
+******* frequency = 434379008.000000 Mhz  bw = 250.000000 Khz
 OOK moved to peak mode
 RssiCalibrateThread active
 RssiCalibrateThread start ----------
 
-setFrequency to 435.287994
+localFrequency to 434379000
+SnapshotRFthread active
 DATA task running
 OokCalibrateThread active
 
 calRSSI : starting, please wait.
-calRSSI : recommending value 0xBA (93.0) rssi=-93.5
-X 1643925437  02-03 16:57 | RssiCalibrateThread setting hi    = 0xBA (-93.0 db) 
+X 1644181478  02-06 16:04 | ints/min = 0 
+
+calRSSI : recommending value 0xA4 (82.0) rssi=-84.5
+X 1644181486  02-06 16:04 | RssiCalibrateThread setting hi    = 0xA4 (-82.0 db) 
 
 
-setFrequency to 432.552002
+localFrequency to 433000000
 
 calRSSI : starting, please wait.
-calRSSI : recommending value 0xB7 (91.5) rssi=-94.0
-X 1643925447  02-03 16:57 | RssiCalibrateThread setting lo    = 0xB7 (-91.5 db) 
+calRSSI : recommending value 0xA2 (81.0) rssi=-83.0
+X 1644181496  02-06 16:04 | RssiCalibrateThread setting lo    = 0xA2 (-81.0 db) 
 
-calRSSI : rssi threshold set to 0xBA (-93.0 db)
-X 1643925447  02-03 16:57 | RssiCalibrateThread setting final = 0xBA (-93.0 db) 
+calRSSI : rssi threshold set to 0xA4 (-82.0 db)
+X 1644181496  02-06 16:04 | RssiCalibrateThread setting final = 0xA4 (-82.0 db) 
 
 
-setFrequency to 433.920013
+localFrequency to 433920000
 RssiCalibrateThread sleep ----------
 OokCalibrateThread start ----------
 
-setFrequency to 435.287994
+localFrequency to 434379000
 
 calOOK noise free cal start
 calOOK : knob = 0 (silence)
@@ -219,36 +173,48 @@ calOOK : knob = 21 (silence)
 calOOK : knob = 28 (silence)
 calOOK : knob = 35 (silence)
 calOOK : knob = 42 (silence)
+calOOK : knob = 49 (silence)
 
-calOOK : knob = 49 (noise found)...looking for silence
-calOOK : knob = 49 hits = 64 (noisy)
-calOOK : knob = 51 hits = 134 (noisy)
-calOOK : knob = 53 hits = 498 (noisy)
-calOOK : knob = 55 hits = 1652 (noisy)
-calOOK : knob = 57 hits = 3624 (noisy)
-calOOK : knob = 59 hits = 5242 (noisy)
-calOOK : knob = 61 hits = 6919 (noisy)
-calOOK : knob = 63 hits = 7566 (noisy)
-calOOK : knob = 65 hits = 6212 (noisy)
-calOOK : knob = 67 hits = 3289 (noisy)
-calOOK : knob = 69 hits = 1826 (noisy)
-calOOK : knob = 71 hits = 644 (noisy)
-calOOK : knob = 73 hits = 168 (noisy)
-calOOK : knob = 75 hits = 24 (noisy)
+calOOK : knob = 56 (noise found)...looking for silence
+calOOK : knob = 56 hits = 50 (noisy)
+calOOK : knob = 58 hits = 116 (noisy)
+calOOK : knob = 60 hits = 428 (noisy)
+calOOK : knob = 62 hits = 1051 (noisy)
+calOOK : knob = 64 hits = 1952 (noisy)
+calOOK : knob = 66 hits = 4204 (noisy)
+calOOK : knob = 68 hits = 5549 (noisy)
+calOOK : knob = 70 hits = 5373 (noisy)
+calOOK : knob = 72 hits = 3989 (noisy)
+calOOK : knob = 74 hits = 2735 (noisy)
+calOOK : knob = 76 hits = 1759 (noisy)
+calOOK : knob = 78 hits = 1176 (noisy)
+calOOK : knob = 80 hits = 1075 (noisy)
+calOOK : knob = 82 hits = 1099 (noisy)
+calOOK : knob = 84 hits = 1232 (noisy)
+calOOK : knob = 86 hits = 1443 (noisy)
+calOOK : knob = 88 hits = 1637 (noisy)
+calOOK : knob = 90 hits = 2106 (noisy)
+calOOK : knob = 92 hits = 2292 (noisy)
+calOOK : knob = 94 hits = 1994 (noisy)
+calOOK : knob = 96 hits = 1146 (noisy)
+calOOK : knob = 98 hits = 558 (noisy)
+calOOK : knob = 100 hits = 232 (noisy)
+calOOK : knob = 102 hits = 22 (noisy)
+calOOK : knob = 104 hits = 2 (noisy)
 slow loop
-calOOK : knob = 73 hits = 1 (noisy)
-calOOK : knob = 74 hits = 1 (noisy)
-calOOK : knob = 75 hits = 1 (noisy)
-calOOK : knob = 76 hits = 1 (noisy)
-calOOK : knob = 77 hits = 1 (noisy)
-calOOK : knob = 78 hits = 1 (noisy)
-calOOK : knob = 79 hits = 1 (noisy)
-
-calOOK : ook floor set to 80 (silence)
-X 1643925489  02-03 16:58 | OokCalibrateThread setting hi end = 0x50 (-40.0 db) 
+calOOK : knob = 102 hits = 1 (noisy)
+calOOK : knob = 103 hits = 1 (noisy)
+calOOK : knob = 104 hits = 1 (noisy)
+calOOK : knob = 105 hits = 1 (noisy)
+calOOK : knob = 106 hits = 1 (noisy)
+X 1644181538  02-06 16:05 | ints/min = 0 
 
 
-setFrequency to 432.552002
+calOOK : ook floor set to 107 (silence)
+X 1644181548  02-06 16:05 | OokCalibrateThread setting hi end = 0x6B (-53.5 db) 
+
+
+localFrequency to 433000000
 
 calOOK noise free cal start
 calOOK : knob = 0 (silence)
@@ -258,8 +224,358 @@ calOOK : knob = 21 (silence)
 calOOK : knob = 28 (silence)
 calOOK : knob = 35 (silence)
 calOOK : knob = 42 (silence)
+calOOK : knob = 49 (silence)
 
-calOOK : knob = 49 (noise found)...looking for silence
-calOOK : knob = 49 hits = 12 (noisy)
-calOOK : knob = 51 hits = 42 (noisy)
-calOOK : knob = 53 hits = 214 (noisy)
+calOOK : knob = 56 (noise found)...looking for silence
+calOOK : knob = 56 hits = 118 (noisy)
+calOOK : knob = 58 hits = 380 (noisy)
+calOOK : knob = 60 hits = 950 (noisy)
+calOOK : knob = 62 hits = 2170 (noisy)
+calOOK : knob = 64 hits = 3328 (noisy)
+calOOK : knob = 66 hits = 5216 (noisy)
+calOOK : knob = 68 hits = 5317 (noisy)
+calOOK : knob = 70 hits = 4371 (noisy)
+calOOK : knob = 72 hits = 3200 (noisy)
+calOOK : knob = 74 hits = 1955 (noisy)
+calOOK : knob = 76 hits = 1397 (noisy)
+calOOK : knob = 78 hits = 1046 (noisy)
+calOOK : knob = 80 hits = 1027 (noisy)
+calOOK : knob = 82 hits = 1017 (noisy)
+calOOK : knob = 84 hits = 1064 (noisy)
+calOOK : knob = 86 hits = 1201 (noisy)
+calOOK : knob = 88 hits = 1387 (noisy)
+calOOK : knob = 90 hits = 1822 (noisy)
+calOOK : knob = 92 hits = 2187 (noisy)
+calOOK : knob = 94 hits = 2378 (noisy)
+calOOK : knob = 96 hits = 2042 (noisy)
+calOOK : knob = 98 hits = 1350 (noisy)
+calOOK : knob = 100 hits = 682 (noisy)
+calOOK : knob = 102 hits = 204 (noisy)
+calOOK : knob = 104 hits = 14 (noisy)
+calOOK : knob = 106 hits = 4 (noisy)
+calOOK : knob = 108 hits = 4 (noisy)
+slow loop
+calOOK : knob = 106 hits = 1 (noisy)
+[D][WiFiGeneric.cpp:374] _eventCallback(): Event: 8 - STA_LOST_IP
+calOOK : knob = 107 hits = 1 (noisy)
+
+calOOK : ook floor set to 108 (silence)
+X 1644181598  02-06 16:06 | ints/min = 0 
+
+X 1644181600  02-06 16:06 | OokCalibrateThread setting lo end = 0x6C (-54.0 db) 
+
+
+localFrequency to 433920000
+
+calOOK noise free cal start
+calOOK : explictly set to 108
+
+X 1644181601  02-06 16:06 | OokCalibrateThread setting final  = 0x6C (-54.0 db) 
+
+OokCalibrateThread sleep ----------
+X 1644181623  02-06 16:07 | SnapshotRFthread rssi -71.5 or -56.5) 
+
+B05780524A32428F.844
+SUM PASS given = 0x4B vs calc = 0x4B
+CRC PASS given = 0x84 vs calc = 0x84
+parseTHGR810 channel : 2
+parseTHGR810 humidity: 57
+parseTHGR810 temp    : -5.2
+R dev=0xF824 ch=02 1644181623  02-06 16:07  -5.2 degC * lo 02-06 16:07  -5.2 degC * hi  02-06 16:07  -5.2 degC * hum=57% | 0 mS 
+
+----------------------
+X 1644181630  02-06 16:07 | SnapshotRFthread rssi -83.0 or -45.0) 
+
+4704000000204192.72100
+SUM PASS given = 0x21 vs calc = 0x21
+CRC PASS given = 0x7 vs calc = 0x7
+parsePCR800 channel : 0
+parsePCR800 rate    : +0.0 mm/hr
+parsePCR800 total   : +4.0 mm
+R dev=0x2914 ch=00 1644181630  02-06 16:07 +00.0 mm/s | pk 02-06 16:07 +00.0 mm/S * tot 02-06 16:07 +04.0 mm   | 0 mS 
+
+----------------------
+X 1644181656  02-06 16:07 | SnapshotRFthread rssi -64.5 or -63.5) 
+
+483202140D15428F.414
+SUM PASS given = 0x44 vs calc = 0x44
+CRC PASS given = 0x41 vs calc = 0x41
+parseTHGR810 channel : 5
+parseTHGR810 humidity: 32
+parseTHGR810 temp    : +21.4
+R dev=0xF824 ch=05 1644181656  02-06 16:07 +21.4 degC * lo 02-06 16:07 +21.4 degC * hi  02-06 16:07 +21.4 degC * hum=32% | 0 mS 
+
+----------------------
+X 1644181656  02-06 16:07 | SnapshotRFthread rssi -77.0 or -51.0) 
+
+X 1644181656  02-06 16:07 | SnapshotRFthread rssi -90.5 or -37.5) 
+
+X 1644181658  02-06 16:07 | ints/min = 610 
+
+X 1644181662  02-06 16:07 | SnapshotRFthread rssi -88.0 or -40.0) 
+
+X 1644181662  02-06 16:07 | SnapshotRFthread rssi -77.0 or -51.0) 
+
+X 1644181662  02-06 16:07 | SnapshotRFthread rssi -80.5 or -47.5) 
+
+X 1644181677  02-06 16:07 | SnapshotRFthread rssi -67.5 or -60.5) 
+
+4704000000204192.72100
+SUM PASS given = 0x21 vs calc = 0x21
+CRC PASS given = 0x7 vs calc = 0x7
+parsePCR800 channel : 0
+parsePCR800 rate    : +0.0 mm/hr
+parsePCR800 total   : +4.0 mm
+no change since last report
+----------------------
+X 1644181682  02-06 16:08 | SnapshotRFthread rssi -72.0 or -56.0) 
+
+B05780524A32428F.844
+SUM PASS given = 0x4B vs calc = 0x4B
+CRC PASS given = 0x84 vs calc = 0x84
+parseTHGR810 channel : 2
+parseTHGR810 humidity: 57
+parseTHGR810 temp    : -5.2
+no change since last report
+----------------------
+X 1644181718  02-06 16:08 | ints/min = 470 
+
+X 1644181724  02-06 16:08 | SnapshotRFthread rssi -53.5 or -74.5) 
+
+4704000000204192.72100
+SUM PASS given = 0x21 vs calc = 0x21
+CRC PASS given = 0x7 vs calc = 0x7
+parsePCR800 channel : 0
+parsePCR800 rate    : +0.0 mm/hr
+parsePCR800 total   : +4.0 mm
+no change since last report
+----------------------
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -77.0 or -51.0) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -89.0 or -39.0) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -87.5 or -40.5) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -92.0 or -36.0) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -77.5 or -50.5) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -86.0 or -42.0) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -81.5 or -46.5) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -81.5 or -46.5) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -83.0 or -45.0) 
+
+X 1644181725  02-06 16:08 | SnapshotRFthread rssi -75.5 or -52.5) 
+
+X 1644181727  02-06 16:08 | SnapshotRFthread rssi -66.0 or -62.0) 
+
+483202140D15428F.414
+SUM PASS given = 0x44 vs calc = 0x44
+CRC PASS given = 0x41 vs calc = 0x41
+parseTHGR810 channel : 5
+parseTHGR810 humidity: 32
+parseTHGR810 temp    : +21.4
+no change since last report
+----------------------
+X 1644181741  02-06 16:09 | SnapshotRFthread rssi -69.0 or -59.0) 
+
+A05780514A32428F.BE4
+SUM PASS given = 0x4A vs calc = 0x4A
+CRC PASS given = 0xBE vs calc = 0xBE
+parseTHGR810 channel : 2
+parseTHGR810 humidity: 57
+parseTHGR810 temp    : -5.1
+R dev=0xF824 ch=02 1644181741  02-06 16:09  -5.1 degC | lo 02-06 16:07  -5.2 degC * hi  02-06 16:09  -5.1 degC | hum=57% | 59001 mS 
+
+----------------------
+X 1644181771  02-06 16:09 | SnapshotRFthread rssi -53.5 or -74.5) 
+
+4704000000204192.72100
+SUM PASS given = 0x21 vs calc = 0x21
+CRC PASS given = 0x7 vs calc = 0x7
+parsePCR800 channel : 0
+parsePCR800 rate    : +0.0 mm/hr
+parsePCR800 total   : +4.0 mm
+no change since last report
+----------------------
+X 1644181779  02-06 16:09 | ints/min = 952 
+
+X 1644181788  02-06 16:09 | SnapshotRFthread rssi -77.5 or -50.5) 
+
+X 1644181790  02-06 16:09 | SnapshotRFthread rssi -77.0 or -51.0) 
+
+X 1644181790  02-06 16:09 | SnapshotRFthread rssi -75.5 or -52.5) 
+
+X 1644181790  02-06 16:09 | SnapshotRFthread rssi -76.0 or -52.0) 
+
+X 1644181790  02-06 16:09 | SnapshotRFthread rssi -92.0 or -36.0) 
+
+X 1644181798  02-06 16:09 | SnapshotRFthread rssi -69.5 or -58.5) 
+
+583202150D15428F.574
+SUM PASS given = 0x45 vs calc = 0x45
+CRC PASS given = 0x57 vs calc = 0x57
+parseTHGR810 channel : 5
+parseTHGR810 humidity: 32
+parseTHGR810 temp    : +21.5
+R dev=0xF824 ch=05 1644181798  02-06 16:09 +21.5 degC | lo 02-06 16:07 +21.4 degC * hi  02-06 16:09 +21.5 degC | hum=32% | 70997 mS 
+
+----------------------
+X 1644181800  02-06 16:10 | SnapshotRFthread rssi -81.0 or -47.0) 
+
+A05780514A32428F.BE4
+SUM PASS given = 0x4A vs calc = 0x4A
+CRC PASS given = 0xBE vs calc = 0xBE
+parseTHGR810 channel : 2
+parseTHGR810 humidity: 57
+parseTHGR810 temp    : -5.1
+no change since last report
+----------------------
+X 1644181818  02-06 16:10 | SnapshotRFthread rssi -65.0 or -63.0) 
+
+4704000000204192.72100
+SUM PASS given = 0x21 vs calc = 0x21
+CRC PASS given = 0x7 vs calc = 0x7
+parsePCR800 channel : 0
+parsePCR800 rate    : +0.0 mm/hr
+parsePCR800 total   : +4.0 mm
+no change since last report
+----------------------
+X 1644181839  02-06 16:10 | ints/min = 930 
+
+X 1644181857  02-06 16:10 | SnapshotRFthread rssi -74.0 or -54.0) 
+
+X 1644181857  02-06 16:10 | SnapshotRFthread rssi -80.5 or -47.5) 
+
+X 1644181859  02-06 16:10 | SnapshotRFthread rssi -74.0 or -54.0) 
+
+A05780514A32428F.BE4
+SUM PASS given = 0x4A vs calc = 0x4A
+CRC PASS given = 0xBE vs calc = 0xBE
+parseTHGR810 channel : 2
+parseTHGR810 humidity: 57
+parseTHGR810 temp    : -5.1
+no change since last report
+----------------------
+X 1644181859  02-06 16:10 | SnapshotRFthread rssi -74.5 or -53.5) 
+
+X 1644181859  02-06 16:10 | SnapshotRFthread rssi -83.5 or -44.5) 
+
+X 1644181859  02-06 16:10 | SnapshotRFthread rssi -75.5 or -52.5) 
+
+X 1644181859  02-06 16:10 | SnapshotRFthread rssi -86.5 or -41.5) 
+
+X 1644181865  02-06 16:11 | SnapshotRFthread rssi -60.5 or -67.5) 
+
+4704000000204192.72100
+SUM PASS given = 0x21 vs calc = 0x21
+CRC PASS given = 0x7 vs calc = 0x7
+parsePCR800 channel : 0
+parsePCR800 rate    : +0.0 mm/hr
+parsePCR800 total   : +4.0 mm
+no change since last report
+----------------------
+X 1644181869  02-06 16:11 | SnapshotRFthread rssi -70.0 or -58.0) 
+
+583202150D15428F.574
+SUM PASS given = 0x45 vs calc = 0x45
+CRC PASS given = 0x57 vs calc = 0x57
+parseTHGR810 channel : 5
+parseTHGR810 humidity: 32
+parseTHGR810 temp    : +21.5
+no change since last report
+----------------------
+X 1644181899  02-06 16:11 | ints/min = 1126 
+
+X 1644181912  02-06 16:11 | SnapshotRFthread rssi -56.5 or -71.5) 
+
+X 1644181912  02-06 16:11 | SnapshotRFthread rssi -52.5 or -75.5) 
+
+X 1644181918  02-06 16:11 | SnapshotRFthread rssi -73.0 or -55.0) 
+
+A05780514A32428F.BE4
+SUM PASS given = 0x4A vs calc = 0x4A
+CRC PASS given = 0xBE vs calc = 0xBE
+parseTHGR810 channel : 2
+parseTHGR810 humidity: 57
+parseTHGR810 temp    : -5.1
+no change since last report
+----------------------
+X 1644181924  02-06 16:12 | SnapshotRFthread rssi -76.5 or -51.5) 
+
+X 1644181924  02-06 16:12 | SnapshotRFthread rssi -77.0 or -51.0) 
+
+X 1644181924  02-06 16:12 | SnapshotRFthread rssi -91.5 or -36.5) 
+
+X 1644181940  02-06 16:12 | SnapshotRFthread rssi -89.5 or -38.5) 
+
+683202160D15428F.6D4
+SUM PASS given = 0x46 vs calc = 0x46
+CRC PASS given = 0x6D vs calc = 0x6D
+parseTHGR810 channel : 5
+parseTHGR810 humidity: 32
+parseTHGR810 temp    : +21.6
+R dev=0xF824 ch=05 1644181940  02-06 16:12 +21.6 degC | lo 02-06 16:07 +21.4 degC * hi  02-06 16:12 +21.6 degC | hum=32% | 70998 mS 
+
+----------------------
+X 1644181959  02-06 16:12 | ints/min = 1034 
+
+X 1644181959  02-06 16:12 | SnapshotRFthread rssi -53.5 or -74.5) 
+
+4704000000204192.72100
+SUM PASS given = 0x21 vs calc = 0x21
+CRC PASS given = 0x7 vs calc = 0x7
+parsePCR800 channel : 0
+parsePCR800 rate    : +0.0 mm/hr
+parsePCR800 total   : +4.0 mm
+no change since last report
+----------------------
+X 1644181965  02-06 16:12 | SnapshotRFthread rssi -77.5 or -50.5) 
+
+X 1644181965  02-06 16:12 | SnapshotRFthread rssi -89.0 or -39.0) 
+
+X 1644181977  02-06 16:12 | SnapshotRFthread rssi -78.5 or -49.5) 
+
+A05780514A32428F.BE4
+SUM PASS given = 0x4A vs calc = 0x4A
+CRC PASS given = 0xBE vs calc = 0xBE
+parseTHGR810 channel : 2
+parseTHGR810 humidity: 57
+parseTHGR810 temp    : -5.1
+no change since last report
+----------------------
+X 1644181991  02-06 16:13 | SnapshotRFthread rssi -76.0 or -52.0) 
+
+X 1644181991  02-06 16:13 | SnapshotRFthread rssi -88.0 or -40.0) 
+
+X 1644181991  02-06 16:13 | SnapshotRFthread rssi -89.0 or -39.0) 
+
+X 1644182006  02-06 16:13 | SnapshotRFthread rssi -54.5 or -73.5) 
+
+4704000000204192.72100
+SUM PASS given = 0x21 vs calc = 0x21
+CRC PASS given = 0x7 vs calc = 0x7
+parsePCR800 channel : 0
+parsePCR800 rate    : +0.0 mm/hr
+parsePCR800 total   : +4.0 mm
+no change since last report
+----------------------
+X 1644182011  02-06 16:13 | SnapshotRFthread rssi -77.5 or -50.5) 
+
+683202160D15428F.6D4
+SUM PASS given = 0x46 vs calc = 0x46
+CRC PASS given = 0x6D vs calc = 0x6D
+parseTHGR810 channel : 5
+parseTHGR810 humidity: 32
+parseTHGR810 temp    : +21.6
+no change since last report
+----------------------
+X 1644182018  02-06 16:13 | SnapshotRFthread rssi -77.0 or -51.0) 
+
+X 1644182018  02-06 16:13 | SnapshotRFthread rssi -80.0 or -48.0) 
+
+X 1644182019  02-06 16:13 | ints/min = 1856 
+

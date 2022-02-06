@@ -51,6 +51,11 @@ typedef struct {
 
 uint8_t rssiCalSetting;
 uint8_t ookCalSetting;
+volatile uint16_t ISR_DIO2DataCtr = 0;
+volatile bool bTimerRunning;
+float lastRssiSnapshot;
+
+volatile SemaphoreHandle_t semCaptureSnaphotNow;
 
 #ifndef TTGO
 
@@ -257,10 +262,7 @@ int setOLED(void)
 }
 //------------------------------------------------------------
 
-volatile int timerCntISR;    // Trigger
-volatile int bTimerRunning;
-
-int totalInterrupts;   // counts the number of triggering of the alarm
+volatile int timerCntISR;    // Triggervolatile int bTimerRunning;
 
 hw_timer_t * hSilenceTimer = NULL;
 
@@ -519,7 +521,7 @@ int setRadio(float freq, float bw)
     //while (xSemaphoreTake( radioOwnerMutex, ( TickType_t ) 10 ) != pdTRUE );
 
     radio.reset();
-    int state = radio.beginFSK(/*float freq =     */ freq,
+    int state = radio.beginFSK(/*float freq =     */ (float)freq/1000000.,
                                /*float br =       */ min(bw/2.0,32.0), //1.2,
                                /*float freqDev =  */ 50.0,
                                /*float rxBw =     */ bw,
@@ -569,22 +571,22 @@ int setRadio(float freq, float bw)
     return state;
 }
 //-------------------------------------------------------------
-#define OREGON_YELLOW  433.9036
-#define MID_FREQ       433.92
-#define OREGON_TRAILER 433.839800
+#define BANDWIDTH_HZ_NORM    250000
 
-#define RX_ISM_LO   433.05
-#define RX_ISM_HI   434.79
-#define RX_ISM_MID  (RX_ISM_HI+RX_ISM_LO)/2
+#define OREGON_YELLOW  433903600
+#define MID_FREQ       433920000
+#define OREGON_TRAILER 433839800
+
+#define RX_ISM_MID  MID_FREQ  //(RX_ISM_HI+RX_ISM_LO)/2
+#define RX_ISM_LO   RX_ISM_MID - BANDWIDTH_HZ_NORM
+#define RX_ISM_HI   RX_ISM_MID + BANDWIDTH_HZ_NORM
 
 
-#define BANDWIDTH_KHZ_NORM    249
 
-// cal frequency is 2 times the bw away from the highest ISM freq.
 #define FREQ_MHZ_NORM     RX_ISM_MID
 
-#define FREQ_MHZ_CAL_HI      ((RX_ISM_HI * 1000000. + 2.0 * BANDWIDTH_KHZ_NORM * 1000.)/ 1000000.)
-#define FREQ_MHZ_CAL_LO      ((RX_ISM_LO * 1000000. - 2.0 * BANDWIDTH_KHZ_NORM * 1000.)/ 1000000.)
+#define FREQ_MHZ_CAL_HI      (434379000)
+#define FREQ_MHZ_CAL_LO      (433000000)
 
 
 //-------------------------------------------------------------
@@ -605,10 +607,10 @@ void ScopeBlips(int numBlips)
     }
 }
 //-------------------------------------------------------------------------
-void setFrequency(float freq)
+void localFrequency(uint32_t freq)
 {
-      radio.setFrequency(freq);
-      Serial.printf("\n%s to %f\n", __FUNCTION__, freq);
+      Serial.printf("\n%s to %d\n", __FUNCTION__, freq);
+      radio.setFrequency((float)freq/1000000.);
       delay(100); //settle pll
 
       // no idea why this gets cleared. Restore it.
@@ -629,12 +631,12 @@ void RssiCalibrateThread(void *notUsed)
 
         Serial.printf("%s start ----------\n", __FUNCTION__);
 
-        setFrequency(FREQ_MHZ_CAL_HI);
+        localFrequency(FREQ_MHZ_CAL_HI);
         hi = radio.calRSSI();
         quickLog("%s setting hi    = 0x%02X (%4.1f db)", __FUNCTION__, hi, -(float)hi / 2.0);
 
 
-        setFrequency(FREQ_MHZ_CAL_LO);
+        localFrequency(FREQ_MHZ_CAL_LO);
         lo = radio.calRSSI();
         quickLog("%s setting lo    = 0x%02X (%4.1f db)", __FUNCTION__, lo, -(float)lo / 2.0);
 
@@ -642,7 +644,7 @@ void RssiCalibrateThread(void *notUsed)
         radio.calRSSI(rssiCalSetting);
         quickLog("%s setting final = 0x%02X (%4.1f db)", __FUNCTION__, rssiCalSetting, -(float)rssiCalSetting / 2.0);
 
-        setFrequency(FREQ_MHZ_NORM);
+        localFrequency(FREQ_MHZ_NORM);
         //setRadio(FREQ_MHZ_NORM, BANDWIDTH_KHZ_NORM);  // setup freq AND BANDWIDTH
 
         Serial.printf("%s sleep ----------\n", __FUNCTION__);
@@ -655,6 +657,39 @@ void RssiCalibrateThread(void *notUsed)
     }
 }
 //-------------------------------------------------------------------------
+static uint16_t statTimeSec;
+
+void StatsThread(void *notUsed)
+{
+    while(1)
+    {
+        delay(1000);
+        if (statTimeSec == 0)
+        {
+            statTimeSec = 60;
+            oprintf(0, "ints = %d", ISR_DIO2DataCtr);
+            quickLog("ints/min = %d", ISR_DIO2DataCtr);
+            ISR_DIO2DataCtr = 0;
+        }
+        statTimeSec--;
+    }
+}
+
+void SnapshotRFthread(void *notUsed)
+{
+    Serial.printf("%s active\n", __FUNCTION__);
+    while(true)
+    {
+        while (xSemaphoreTake( semCaptureSnaphotNow, portMAX_DELAY ) != pdTRUE );
+
+        float snaplastRSSI = radio.getRSSI(1);  // read val but dont restart state machine.
+        //float answer = radio.getFrequencyError();
+        //float answer = radio.getAFCError();
+
+        quickLog("%s rssi %4.1f or %4.1f)", __FUNCTION__, snaplastRSSI, -128. - snaplastRSSI);
+
+    }
+}
 
 void OokCalibrateThread(void *notUsed)
 {
@@ -663,20 +698,21 @@ void OokCalibrateThread(void *notUsed)
     {
         uint16_t hi, lo;
         while (xSemaphoreTake( radioOwnerMutex, ( TickType_t ) 1000 ) != pdTRUE );
+
         bCalInProgress = true;
         Serial.printf("%s start ----------\n", __FUNCTION__);
 
-        setFrequency(FREQ_MHZ_CAL_HI);
+        localFrequency(FREQ_MHZ_CAL_HI);
         hi = radio.calOOK();   // find out what it is
         quickLog("%s setting hi end = 0x%02X (%4.1f db)", __FUNCTION__, hi, -(float)hi / 2.0);
 
-        setFrequency(FREQ_MHZ_CAL_LO);
+        localFrequency(FREQ_MHZ_CAL_LO);
         lo = radio.calOOK();   // find out what it is
         quickLog("%s setting lo end = 0x%02X (%4.1f db)", __FUNCTION__, lo, -(float)lo / 2.0);
 
         ookCalSetting = max (hi, lo);
 
-        setFrequency(FREQ_MHZ_NORM);
+        localFrequency(FREQ_MHZ_NORM);
         radio.calOOK(ookCalSetting);    // set and forget (must occur after set freq);
 
         quickLog("%s setting final  = 0x%02X (%4.1f db)", __FUNCTION__, ookCalSetting, -(float)ookCalSetting / 2.0);
@@ -684,6 +720,7 @@ void OokCalibrateThread(void *notUsed)
         Serial.printf("%s sleep ----------\n", __FUNCTION__);
 
         bCalInProgress = false;
+
         xSemaphoreGive(radioOwnerMutex);
         delay(1000 * 60 * 60 * 4 );  // call every 4 hours.
     }
@@ -757,7 +794,7 @@ void setup() {
   Serial.println(bFoundDumb433 ? BOOT_MSG1 : BOOT_MSG2);
 
   setupWiFi();  // setup the time first.
-  
+
 #if !JTAG_PRESENT
   setupFS();    // fs needs time from wifi.
 
@@ -775,6 +812,7 @@ void setup() {
     eraseOregon();
     Serial.printf("erase done. Waiting for GPIO%d to be released\n", SCOPE_GPIO35);
     while (!digitalRead(SCOPE_GPIO35)) delay(500);
+    delay(2000);
   }
 
 #endif
@@ -784,6 +822,8 @@ void setup() {
 
   // now SCOPE_GPIO is an output for the scope.
   pinMode(SCOPE_GPIO35,OUTPUT);
+
+  semCaptureSnaphotNow = xSemaphoreCreateBinary();
 
   radioOwnerMutex = xSemaphoreCreateMutex();
   assert(radioOwnerMutex);
@@ -799,7 +839,7 @@ void setup() {
       // initialize SX1278 with default settings
       Serial.print(F("[SX1278] Initializing ... "));
 
-      setRadio(FREQ_MHZ_CAL_HI, BANDWIDTH_KHZ_NORM);  // setup freq AND BANDWIDTH
+      setRadio(FREQ_MHZ_CAL_HI, BANDWIDTH_HZ_NORM/1000);  // setup freq AND BANDWIDTH
 
       xTaskCreatePinnedToCore(
                       RssiCalibrateThread, /* Function to implement the task */
@@ -818,6 +858,26 @@ void setup() {
                       0,              /* Priority of the task */
                       NULL,           /* Task handle. */
                       1);             /* Core where the task should run */
+
+
+      xTaskCreatePinnedToCore(
+                      StatsThread,  /* Function to implement the task */
+                      "StatsThread", /* Name of the task */
+                      10000,           /* Stack size in words */
+                      (void *)99,     /* Task input parameter */
+                      0,              /* Priority of the task */
+                      NULL,           /* Task handle. */
+                      1);             /* Core where the task should run */
+
+      xTaskCreatePinnedToCore(
+                      SnapshotRFthread,  /* Function to implement the task */
+                      "SnapshotRFthread", /* Name of the task */
+                      10000,           /* Stack size in words */
+                      (void *)99,     /* Task input parameter */
+                      0,              /* Priority of the task */
+                      NULL,           /* Task handle. */
+                      1);             /* Core where the task should run */
+
 
 
       yield();
@@ -980,7 +1040,17 @@ void IRQ2TaskMessage(bool bForced)
     }
 }
 //---------------------------------------
-
+void signalErrorReq()
+{
+    static BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    xSemaphoreGiveFromISR(semCaptureSnaphotNow, &xHigherPriorityTaskWoken);
+    if( xHigherPriorityTaskWoken == pdTRUE)
+    {
+        // this wakes up waiting immediately instead of on next FreeRTOS tick
+        portYIELD_FROM_ISR();
+    }
+}
+//---------------------------------------
 void ISR_DIO2Data(void)
 {
     static bool bTossHeads;
@@ -1007,7 +1077,13 @@ void ISR_DIO2Data(void)
 
     timerWrite(hSilenceTimer, 0); //retriggerable - one shot (reset silenceTimer)
 
-    if (bCalInProgress) return;   // radio cal in progress.
+    if (bCalInProgress)
+    {
+        ISR_DIO2DataCtr = 0;
+        return;   // radio cal in progress.
+    }
+
+    ISR_DIO2DataCtr++;
 
     signed long now = micros(); // keep it signed.
 
@@ -1081,6 +1157,7 @@ void ISR_DIO2Data(void)
                 rising.lateTime = now - rising.arrivalTime;
                 rising.arrivalTime  = -1;
                 bSyncBitsComplete = true;
+                signalErrorReq();
 
                 // all sync past, preamble just starting
                 //blip(2);
@@ -1115,12 +1192,12 @@ void ISR_DIO2Data(void)
                 falling.lateTime = now - falling.arrivalTime;
                 falling.arrivalTime  = -1;
                 bSyncBitsComplete = true;
+                signalErrorReq();
                 //blip(3);
             }
         }
      }
 
-    /////////////////////     IRQ2TaskMessage(false);
 }
 
 void loop()
