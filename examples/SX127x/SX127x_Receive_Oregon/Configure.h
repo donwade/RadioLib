@@ -4,15 +4,20 @@
 #define ERASE_SD_ONPOWERUP 0
 
 #define WIFI_AVAILABLE  1
-#define MY_SSID "DISABLED"
 
-#if WIFI_AVAILABLE
-    #undef  MY_SSID
-    #define MY_SSID "ignite wifi"
-    #define MY_PASSWORD "DEADBEEF04"
+#if WIFI_AVAILABLE 
+  #include "../wifiSecret.h"  // not inside of git control
+#else
+  #ifndef MY_SSID
+     #define MY_SSID "DISABLED"
+  #endif
+  #ifndef MY_SSID
+     #define MY_SSID "whitehouse"
+  #endif
 #endif
 
-#define SDCARD_LOGGING 1 //define this to be a one or a zero
+
+#define SDCARD_LOGGING 0 //define this to be a one or a zero
 
 #if SDCARD_LOGGING == 1
     #define JTAG_PRESENT 0
@@ -29,8 +34,6 @@
 
 //see https://remotemonitoringsystems.ca/time-zone-abbreviations.php
 #define TZ_INFO  "EST5EDT"
-
-// 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
 
 #endif  //__DEFINES_H__
 

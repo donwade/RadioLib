@@ -578,8 +578,8 @@ int setRadio(float freq, float bw)
 #define OREGON_TRAILER 433839800
 
 #define RX_ISM_MID  MID_FREQ  //(RX_ISM_HI+RX_ISM_LO)/2
-#define RX_ISM_LO   RX_ISM_MID - BANDWIDTH_HZ_NORM
-#define RX_ISM_HI   RX_ISM_MID + BANDWIDTH_HZ_NORM
+#define RX_ISM_LO   RX_ISM_MID - BANDWIDTH_HZ_NORM/2
+#define RX_ISM_HI   RX_ISM_MID + BANDWIDTH_HZ_NORM/2
 
 
 
@@ -682,11 +682,11 @@ void SnapshotRFthread(void *notUsed)
     {
         while (xSemaphoreTake( semCaptureSnaphotNow, portMAX_DELAY ) != pdTRUE );
 
-        float snaplastRSSI = radio.getRSSI(1);  // read val but dont restart state machine.
+        float snapshotRssi = radio.getRSSI(1);  // read val but dont restart state machine.
         //float answer = radio.getFrequencyError();
         //float answer = radio.getAFCError();
 
-        quickLog("%s rssi %4.1f or %4.1f)", __FUNCTION__, snaplastRSSI, -128. - snaplastRSSI);
+        //quickLog("%s rssi %4.1f ", __FUNCTION__, snapshotRssi);
 
     }
 }
@@ -916,6 +916,9 @@ void setup() {
                   0,              /* Priority of the task */
                   NULL,           /* Task handle. */
                   1);             /* Core where the task should run */
+
+    Serial.printf("freq range  %d < %d < %d\n", RX_ISM_LO, MID_FREQ, RX_ISM_HI);
+    delay(3000);
 
 }
 
