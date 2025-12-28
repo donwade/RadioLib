@@ -1,41 +1,85 @@
 /*
-  RadioLib CC1101 Receive with Interrupts Example
-
-  This example listens for FSK transmissions and tries to
-  receive them. Once a packet is received, an interrupt is
-  triggered.
-
-  To successfully receive data, the following settings have to be the same
-  on both transmitter and receiver:
-  - carrier frequency
-  - bit rate
-  - frequency deviation
-  - sync word
-
-  For default module settings, see the wiki page
-  https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
-
-  For full API reference, see the GitHub Pages
-  https://jgromes.github.io/RadioLib/
-*/
+ * RadioLib CC1101 Receive with Interrupts Example
+ *
+ * This example listens for FSK transmissions and tries to
+ * receive them. Once a packet is received, an interrupt is
+ * triggered.
+ *
+ * To successfully receive data, the following settings have to be the same
+ * on both transmitter and receiver:
+ * - carrier frequency
+ * - bit rate
+ * - frequency deviation
+ * - sync word
+ *
+ * For default module settings, see the wiki page
+ * https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
+ *
+ * For full API reference, see the GitHub Pages
+ * https://jgromes.github.io/RadioLib/
+ */
 
 // include the library
+#include <_m5Core2-only.h>
+//#include <M5Unified.h>
+#include <_viewController.h>
+#include "built_on.h"
+
 #include <RadioLib.h>
+
+#define CORES3_MOSI 37
+#define CORES3_MISO 35
+#define CORES3_SCK  36
+#define CORES3_CS   5
+#define CORES3_IO2  10
+#define CORES3_IO0  7
+
+#define CORE2_MOSI  23
+#define CORE2_MISO  38
+#define CORE2_SCK    18
+#define CORE2_CS   27
+#define CORE2_IO2  19
+#define CORE2_IO0  33
+
+#if defined (ARDUINO_M5STACK_CORE2)
+
+//#pragma message ("YELLOW -----------------------------------")
+#define CORE_MOSI CORE2_MOSI
+#define CORE_MISO CORE2_MISO
+#define CORE_SCK  CORE2_SCK
+#define CORE_CS   CORE2_CS
+#define CORE_IO2  CORE2_IO2
+#define CORE_IO0  CORE2_IO0
+
+#elif defined (ARDUINO_M5STACK_CORES3)
+
+//#pragma message ("BLACK -----------------------------------")
+#define CORE_MOSI CORES3_MOSI
+#define CORE_MISO CORES3_MISO
+#define CORE_SCK  CORES3_SCK
+#define CORE_CS   CORES3_CS
+#define CORE_IO2  CORES3_IO2
+#define CORE_IO0  CORES3_IO0
+
+#else
+#error "no such processor"
+#endif
 
 // CC1101 has the following connections:
 // CS pin:    10
 // GDO0 pin:  2
 // RST pin:   unused
-// GDO2 pin:  3 (optional)
-CC1101 radio = new Module(10, 2, RADIOLIB_NC, 3);
+// GDO2 pin:  3
+
+CC1101 radio = new Module(CORE_CS, CORE_IO0, RADIOLIB_NC, CORE_IO2);
 
 // or detect the pinout automatically using RadioBoards
 // https://github.com/radiolib-org/RadioBoards
 /*
-#define RADIO_BOARD_AUTO
-#include <RadioBoards.h>
-Radio radio = new RadioModule();
-*/
+ #define RADIO_BOARD_AUTO
+ #include <RadioBoards.h>
+ * Radio radio = new RadioModule();
+ */
 
 // flag to indicate that a packet was received
 volatile bool receivedFlag = false;
@@ -45,101 +89,135 @@ volatile bool receivedFlag = false;
 // IMPORTANT: this function MUST be 'void' type
 //            and MUST NOT have any arguments!
 #if defined(ESP8266) || defined(ESP32)
-  ICACHE_RAM_ATTR
+ICACHE_RAM_ATTR
 #endif
-void setFlag(void) {
-  // we got a packet, set the flag
-  receivedFlag = true;
+void setFlag(void)
+{
+    // we got a packet, set the flag
+    receivedFlag = true;
 }
 
-void setup() {
-  Serial.begin(9600);
 
-  // initialize CC1101 with default settings
-  Serial.print(F("[CC1101] Initializing ... "));
-  int state = radio.begin();
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while (true) { delay(10); }
-  }
+void setup()
+{
+    _setup_M5();
 
-  // set the function that will be called
-  // when new packet is received
-  radio.setPacketReceivedAction(setFlag);
+    Serial.begin(115200);
+    delay(1000);
 
-  // start listening for packets
-  Serial.print(F("[CC1101] Starting to listen ... "));
-  state = radio.startReceive();
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while (true) { delay(10); }
-  }
 
-  // if needed, 'listen' mode can be disabled by calling
-  // any of the following methods:
-  //
-  // radio.standby()
-  // radio.sleep()
-  // radio.transmit();
-  // radio.receive();
-  // radio.readData();
-}
+    // initialize CC1101 with default settings
+    Serial.print(F("[CC1101] Initializing ... "));
+    int state = radio.begin();
 
-void loop() {
-  // check if the flag is set
-  if(receivedFlag) {
-    // reset flag
-    receivedFlag = false;
+    if (state == RADIOLIB_ERR_NONE)
+    {
+        Serial.println(F("success!"));
+    }
+    else
+    {
+        Serial.print(F("failed, code "));
+        Serial.println(state);
 
-    // you can read received data as an Arduino String
-    String str;
-    int state = radio.readData(str);
-
-    // you can also read received data as byte array
-    /*
-      byte byteArr[8];
-      int numBytes = radio.getPacketLength();
-      int state = radio.readData(byteArr, numBytes);
-    */
-
-    if (state == RADIOLIB_ERR_NONE) {
-      // packet was successfully received
-      Serial.println(F("[CC1101] Received packet!"));
-
-      // print data of the packet
-      Serial.print(F("[CC1101] Data:\t\t"));
-      Serial.println(str);
-
-      // print RSSI (Received Signal Strength Indicator)
-      // of the last received packet
-      Serial.print(F("[CC1101] RSSI:\t\t"));
-      Serial.print(radio.getRSSI());
-      Serial.println(F(" dBm"));
-
-      // print LQI (Link Quality Indicator)
-      // of the last received packet, lower is better
-      Serial.print(F("[CC1101] LQI:\t\t"));
-      Serial.println(radio.getLQI());
-
-    } else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
-      // packet was received, but is malformed
-      Serial.println(F("CRC error!"));
-
-    } else {
-      // some other error occurred
-      Serial.print(F("failed, code "));
-      Serial.println(state);
-
+        while (true)
+            delay(10);
     }
 
-    // put module back to listen mode
-    radio.startReceive();
-  }
+    // set the function that will be called
+    // when new packet is received
+    radio.setPacketReceivedAction(setFlag);
 
+    // start listening for packets
+    Serial.print(F("[CC1101] Starting to listen ... "));
+    state = radio.startReceive();
+
+    if (state == RADIOLIB_ERR_NONE)
+    {
+        Serial.println(F("success!"));
+    }
+    else
+    {
+        Serial.print(F("failed, code "));
+        Serial.println(state);
+
+        while (true)
+            delay(10);
+    }
+
+    // if needed, 'listen' mode can be disabled by calling
+    // any of the following methods:
+    //
+    // radio.standby()
+    // radio.sleep()
+    // radio.transmit();
+    // radio.receive();
+    // radio.readData();
+}
+
+
+
+void loop()
+{
+    // check if the flag is set
+    if (receivedFlag)
+    {
+        // reset flag
+        receivedFlag = false;
+
+#if defined(OLD)
+        // you can read received data as an Arduino String
+        String str;
+        int state = radio.readData(str);
+#else
+        // you can also read received data as byte array
+        
+        byte byteArr[1000];
+        int numBytes = radio.getPacketLength();
+        Serial.printf("xxxx len = %d\n", numBytes);
+        delay(1000);
+        int state = radio.readData(byteArr, numBytes);
+        byteArr[numBytes]= 0;
+        
+#endif
+        if (state == RADIOLIB_ERR_NONE)
+        {
+            // packet was successfully received
+            Serial.println(F("[CC1101] Received packet!"));
+
+            // print data of the packet
+            Serial.print(F("[CC1101] Data:\t\t"));
+#if defined(OLD)
+            Serial.println(str);
+#else
+			Serial.printf(">>> %s\n", (char *)byteArr);
+#endif
+            // print RSSI (Received Signal Strength Indicator)
+            // of the last received packet
+            Serial.print(F("[CC1101] RSSI:\t\t"));
+            Serial.print(radio.getRSSI());
+            Serial.println(F(" dBm"));
+
+            // print LQI (Link Quality Indicator)
+            // of the last received packet, lower is better
+            Serial.print(F("[CC1101] LQI:\t\t"));
+            Serial.println(radio.getLQI());
+
+        }
+        else if (state == RADIOLIB_ERR_CRC_MISMATCH)
+        {
+            // packet was received, but is malformed
+            Serial.println(F("CRC error!"));
+
+        }
+        else
+        {
+            // some other error occurred
+            Serial.print(F("failed, code "));
+            Serial.println(state);
+
+        }
+
+        // put module back to listen mode
+        radio.startReceive();
+    }
 }

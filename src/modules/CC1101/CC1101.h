@@ -513,11 +513,11 @@
 #define RADIOLIB_CC1101_GDO0_ACTIVE                             0b00000001  //  0     0   GDO0 is active/asserted
 
 // RadioLib defaults
-#define RADIOLIB_CC1101_DEFAULT_FREQ                            434.0
-#define RADIOLIB_CC1101_DEFAULT_BR                              4.8
+#define RADIOLIB_CC1101_DEFAULT_FREQ                            905.0
+#define RADIOLIB_CC1101_DEFAULT_BR                              .3
 #define RADIOLIB_CC1101_DEFAULT_FREQDEV                         5.0
 #define RADIOLIB_CC1101_DEFAULT_RXBW                            58.0
-#define RADIOLIB_CC1101_DEFAULT_POWER                           10
+#define RADIOLIB_CC1101_DEFAULT_POWER                           -10
 #define RADIOLIB_CC1101_DEFAULT_PREAMBLELEN                     16
 #define RADIOLIB_CC1101_DEFAULT_SW                              {0x12, 0xAD}
 #define RADIOLIB_CC1101_DEFAULT_SW_LEN                          2
@@ -911,6 +911,12 @@ class CC1101: public PhysicalLayer {
       \returns Last packet LQI (lower is better).
     */
     uint8_t getLQI() const;
+
+    /*!
+      \brief Gets how many bytes stuck in tx transmitter.
+      \returns Number of bytes in Tx fifo
+    */
+    uint8_t getTxFifoCount();
 
     /*!
       \brief Query modem for the packet length of received payload.

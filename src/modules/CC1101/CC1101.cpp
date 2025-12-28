@@ -820,6 +820,13 @@ uint8_t CC1101::getLQI() const {
   return(this->rawLQI);
 }
 
+uint8_t CC1101::getTxFifoCount() {
+	uint8_t count = SPIreadRegister(RADIOLIB_CC1101_REG_TXBYTES);
+  return(count);
+}
+
+
+
 size_t CC1101::getPacketLength(bool update) {
   if(!this->packetLengthQueried && update) {
     if(this->packetLengthConfig == RADIOLIB_CC1101_LENGTH_CONFIG_VARIABLE) {

@@ -59,7 +59,7 @@
 #endif
 
 // print debug info
-#if RADIOLIB_DEBUG
+#if defined(RADIOLIB_DEBUG)
   #pragma message(RADIOLIB_INFO)
 #endif
 
