@@ -344,8 +344,13 @@ int16_t CC1101::startReceive() {
 
   // set GDO0 mapping
   // this is the only interrupt source that works reliably
-  // RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED gets triggered by both packet received as well as packet discarded,
+  
+  // RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED
+  //    gets triggered by both packet received 
+  //    as well as packet discarded,
+
   // RADIOLIB_CC1101_GDOX_PKT_RECEIVED_CRC_OK does not get triggered with CRC disabled
+
   state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_RX_FIFO_FULL_OR_PKT_END, 6, 0);
   RADIOLIB_ASSERT(state);
 

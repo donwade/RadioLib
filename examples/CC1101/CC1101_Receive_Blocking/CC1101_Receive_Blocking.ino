@@ -23,13 +23,59 @@
 
 // include the library
 #include <RadioLib.h>
+// include the library
+#include <_m5Core2-only.h>
+//#include <M5Unified.h>
+#include <_viewController.h>
+#include "built_on.h"
+
+#include <RadioLib.h>
+
+#define CORES3_MOSI 37
+#define CORES3_MISO 35
+#define CORES3_SCK  36
+#define CORES3_CS   5
+#define CORES3_IO2  10
+#define CORES3_IO0  7
+
+#define CORE2_MOSI  23
+#define CORE2_MISO  38
+#define CORE2_SCK    18
+#define CORE2_CS   27
+#define CORE2_IO2  19
+#define CORE2_IO0  33
+
+#if defined (ARDUINO_M5STACK_CORE2)
+
+//#pragma message ("YELLOW -----------------------------------")
+#define CORE_MOSI CORE2_MOSI
+#define CORE_MISO CORE2_MISO
+#define CORE_SCK  CORE2_SCK
+#define CORE_CS   CORE2_CS
+#define CORE_IO2  CORE2_IO2
+#define CORE_IO0  CORE2_IO0
+
+#elif defined (ARDUINO_M5STACK_CORES3)
+
+//#pragma message ("BLACK -----------------------------------")
+#define CORE_MOSI CORES3_MOSI
+#define CORE_MISO CORES3_MISO
+#define CORE_SCK  CORES3_SCK
+#define CORE_CS   CORES3_CS
+#define CORE_IO2  CORES3_IO2
+#define CORE_IO0  CORES3_IO0
+
+#else
+#error "no such processor"
+#endif
 
 // CC1101 has the following connections:
 // CS pin:    10
 // GDO0 pin:  2
 // RST pin:   unused
-// GDO2 pin:  3 (optional)
-CC1101 radio = new Module(10, 2, RADIOLIB_NC, 3);
+// GDO2 pin:  3
+
+CC1101 radio = new Module(CORE_CS, CORE_IO0, RADIOLIB_NC, CORE_IO2);
 
 // or detect the pinout automatically using RadioBoards
 // https://github.com/radiolib-org/RadioBoards
@@ -40,7 +86,10 @@ Radio radio = new RadioModule();
 */
 
 void setup() {
-  Serial.begin(9600);
+    _setup_M5();
+
+    Serial.begin(115200);
+    delay(1000);
 
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
@@ -56,6 +105,7 @@ void setup() {
 
 void loop() {
   Serial.print(F("[CC1101] Waiting for incoming transmission ... "));
+    _loop_M5();
 
   // you can receive data as an Arduino String
   String str;

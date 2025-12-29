@@ -92,7 +92,7 @@ volatile bool bAllowNextTx = false;
 #if defined(ESP8266) || defined(ESP32)
 ICACHE_RAM_ATTR
 #endif
-void setFlag(void)
+void onIRQtx(void)
 {
     // we sent a packet, set the flag
     bTxDone = true;
@@ -126,7 +126,7 @@ void setup()
 
     // set the function that will be called
     // when packet transmission is finished
-    radio.setPacketSentAction(setFlag);
+    radio.setPacketSentAction(onIRQtx);
 
     // start transmitting the first packet
     Serial.print(F("[CC1101] Sending first packet ... "));

@@ -91,7 +91,7 @@ volatile bool receivedFlag = false;
 #if defined(ESP8266) || defined(ESP32)
 ICACHE_RAM_ATTR
 #endif
-void setFlag(void)
+void onIRQrx(void)
 {
     // we got a packet, set the flag
     receivedFlag = true;
@@ -125,7 +125,7 @@ void setup()
 
     // set the function that will be called
     // when new packet is received
-    radio.setPacketReceivedAction(setFlag);
+    radio.setPacketReceivedAction(onIRQrx);
 
     // start listening for packets
     Serial.print(F("[CC1101] Starting to listen ... "));
@@ -158,6 +158,7 @@ void setup()
 
 void loop()
 {
+    _loop_M5();
     // check if the flag is set
     if (receivedFlag)
     {
@@ -172,9 +173,9 @@ void loop()
         // you can also read received data as byte array
         
         byte byteArr[1000];
-        int numBytes = radio.getPacketLength();
+        memset(byteArr, 'U', sizeof(byteArr));
+        int numBytes = radio.getPacketLength(true);
         Serial.printf("xxxx len = %d\n", numBytes);
-        delay(1000);
         int state = radio.readData(byteArr, numBytes);
         byteArr[numBytes]= 0;
         
