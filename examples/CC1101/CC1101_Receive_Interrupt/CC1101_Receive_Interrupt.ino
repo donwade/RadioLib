@@ -84,10 +84,14 @@ CC1101 radio = new Module(CORE_CS, CORE_IO0, RADIOLIB_NC, CORE_IO2);
 // flag to indicate that a packet was received
 volatile bool receivedFlag = false;
 
+ SemaphoreHandle_t sem_DATA_READY = xSemaphoreCreateBinary();
+
 // this function is called when a complete packet
 // is received by the module
 // IMPORTANT: this function MUST be 'void' type
 //            and MUST NOT have any arguments!
+
+
 #if defined(ESP8266) || defined(ESP32)
 ICACHE_RAM_ATTR
 #endif
@@ -95,6 +99,11 @@ void onIRQrx(void)
 {
     // we got a packet, set the flag
     receivedFlag = true;
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+ 	xSemaphoreGiveFromISR( sem_DATA_READY, &xHigherPriorityTaskWoken );
+
+	// wake up task that need it.
+	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }
 
 
@@ -154,32 +163,26 @@ void setup()
     // radio.readData();
 }
 
-
+uint32_t timer;
 
 void loop()
 {
     _loop_M5();
-    // check if the flag is set
-    if (receivedFlag)
-    {
-        // reset flag
-        receivedFlag = false;
 
-#if defined(OLD)
-        // you can read received data as an Arduino String
-        String str;
-        int state = radio.readData(str);
-#else
-        // you can also read received data as byte array
-        
+
+	int ret1 = xSemaphoreTake( sem_DATA_READY, pdMS_TO_TICKS(30000));
+	if (ret1 == pdTRUE)
+	{
+
         byte byteArr[1000];
-        memset(byteArr, 'U', sizeof(byteArr));
+        //memset(byteArr, 'U', sizeof(byteArr));
+
         int numBytes = radio.getPacketLength(true);
         Serial.printf("xxxx len = %d\n", numBytes);
+
         int state = radio.readData(byteArr, numBytes);
         byteArr[numBytes]= 0;
         
-#endif
         if (state == RADIOLIB_ERR_NONE)
         {
             // packet was successfully received
@@ -187,11 +190,8 @@ void loop()
 
             // print data of the packet
             Serial.print(F("[CC1101] Data:\t\t"));
-#if defined(OLD)
-            Serial.println(str);
-#else
 			Serial.printf(">>> %s\n", (char *)byteArr);
-#endif
+		
             // print RSSI (Received Signal Strength Indicator)
             // of the last received packet
             Serial.print(F("[CC1101] RSSI:\t\t"));

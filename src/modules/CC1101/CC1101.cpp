@@ -430,7 +430,8 @@ int16_t CC1101::finishReceive() {
   RADIOLIB_ASSERT(state);
 
   // reset GDO0 back to high-Z
-  return(SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_HIGH_Z, 5, 0));
+  /// NO NO NO! makes noisereturn(SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_HIGH_Z, 5, 0));
+  return 0;
 }
 
 int16_t CC1101::setFrequency(float freq) {
