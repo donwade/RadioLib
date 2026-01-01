@@ -106,6 +106,7 @@ void onIRQrx(void)
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }
 
+//-------------------------------------------------------------
 
 void setup()
 {
@@ -161,14 +162,23 @@ void setup()
     // radio.transmit();
     // radio.receive();
     // radio.readData();
+    _lclear();
+    _cprintf(_WHITE, 0, "%s", built_on);
+    _loop_M5();
+    
 }
 
 uint32_t timer;
 
+//-------------------------------------------------------------
+
 void loop()
 {
+	static uint32_t rx_cnt;
+	uint8_t cline = 0;
+	
+	char msg[50];
     _loop_M5();
-
 
 	int ret1 = xSemaphoreTake( sem_DATA_READY, pdMS_TO_TICKS(30000));
 	if (ret1 == pdTRUE)
@@ -191,18 +201,25 @@ void loop()
             // print data of the packet
             Serial.print(F("[CC1101] Data:\t\t"));
 			Serial.printf(">>> %s\n", (char *)byteArr);
-		
+
+			sprintf(msg,"rx = %d len=%d", ++rx_cnt, numBytes);
+ 			Serial.printf("%s\n", msg);
+ 			_cprintf(_GREEN, ++cline, "%s\n", msg);
+			
             // print RSSI (Received Signal Strength Indicator)
             // of the last received packet
-            Serial.print(F("[CC1101] RSSI:\t\t"));
-            Serial.print(radio.getRSSI());
-            Serial.println(F(" dBm"));
-
+            
+	        sprintf(msg, "RSSI: %5.1f", radio.getRSSI());
+ 			Serial.printf("%s\n", msg);
+ 			_cprintf(_GREEN, ++cline, "%s\n", msg);
+ 			
             // print LQI (Link Quality Indicator)
             // of the last received packet, lower is better
-            Serial.print(F("[CC1101] LQI:\t\t"));
-            Serial.println(radio.getLQI());
-
+            
+	        sprintf(msg, "LQI: %5.1f", radio.getLQI());
+ 			Serial.printf("%s\n", msg);
+ 			_cprintf(_GREEN, ++cline, "%s\n", msg);
+ 
         }
         else if (state == RADIOLIB_ERR_CRC_MISMATCH)
         {
