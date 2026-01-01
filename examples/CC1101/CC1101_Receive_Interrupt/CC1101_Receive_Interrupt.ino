@@ -164,7 +164,8 @@ void setup()
     // radio.readData();
     _lclear();
     _cprintf(_WHITE, 0, "%s", built_on);
-    _loop_M5();
+
+	radio.DumpRegs("initialized ");
     
 }
 

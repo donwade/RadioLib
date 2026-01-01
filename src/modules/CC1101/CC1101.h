@@ -1033,6 +1033,10 @@ class CC1101: public PhysicalLayer {
     */
     int16_t setDIOMapping(uint32_t pin, uint32_t value) override;
 
+    void binary (unsigned char byte);
+    void DumpRegs(char *msg);
+
+
   #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
     protected:
   #endif
@@ -1047,6 +1051,7 @@ class CC1101: public PhysicalLayer {
     void SPIwriteRegister(uint8_t reg, uint8_t data);
 
     void SPIsendCommand(uint8_t cmd);
+
 
   #if !RADIOLIB_GODMODE
     private:

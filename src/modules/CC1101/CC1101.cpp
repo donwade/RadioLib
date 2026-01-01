@@ -181,6 +181,30 @@ int16_t CC1101::receiveDirect(bool sync) {
   return(RADIOLIB_ERR_NONE);
 }
 
+
+void CC1101::binary (unsigned char byte) {
+    for (int i = 7; i >= 0; i--) {
+        // Use bitwise AND (&) and right shift (>>) to check each bit
+        Serial.printf("%d", (byte >> i) & 1);
+    }
+    
+}
+
+void CC1101::DumpRegs(char *msg)
+{
+	int8_t regs;
+	Serial.printf("\n//-----------%s start ------------------------------\n", msg);
+	
+	for (regs = 0 ; regs < 0x30; regs++)
+	{	
+		uint8_t read = SPIreadRegister(regs);
+		Serial.printf("\t0x%02X    0x%02X  ", regs, read);
+		binary(read);
+		Serial.println("");
+	}
+	Serial.printf("//-----------%s end ------------------------------\n\n", msg);
+}
+
 int16_t CC1101::packetMode() {
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, RADIOLIB_CC1101_CRC_AUTOFLUSH_OFF | RADIOLIB_CC1101_APPEND_STATUS_ON | RADIOLIB_CC1101_ADR_CHK_NONE, 3, 0);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_WHITE_DATA_OFF | RADIOLIB_CC1101_PKT_FORMAT_NORMAL, 6, 4);
@@ -1048,7 +1072,9 @@ int16_t CC1101::beginCommon(float freq, float br, float freqDev, float rxBw, int
       i++;
     }
   }
-
+  
+  DumpRegs("virgin radiolib ");
+  
   if(!flagFound) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("No CC1101 found!");
     this->mod->term();
