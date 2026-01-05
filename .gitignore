@@ -26,4 +26,6 @@ board*
 built*
 putty*
 last.ota
+*.log
+*.keep
 
