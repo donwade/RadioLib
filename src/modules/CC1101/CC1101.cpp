@@ -1054,6 +1054,9 @@ int16_t CC1101::setDIOMapping(uint32_t pin, uint32_t value) {
 
 int16_t CC1101::beginCommon(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLength) {
   // set module properties
+
+  Serial.printf("\n-------\nfreq=%f br=%d freqDev=%d rxBw=%d pwr=%d preambleLength=%d\n-------\n",
+				  freq, int(br*1000.), (int)freqDev, (int)rxBw, pwr, preambleLength);
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_CC1101_CMD_READ;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_CC1101_CMD_WRITE;
   this->mod->init();

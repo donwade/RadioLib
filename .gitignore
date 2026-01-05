@@ -19,3 +19,11 @@ build/
 
 # Compote build output
 dist
+
+# mine
+parse*
+board*
+built*
+putty*
+last.ota
+
