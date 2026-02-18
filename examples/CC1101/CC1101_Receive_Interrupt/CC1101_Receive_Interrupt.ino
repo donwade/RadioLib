@@ -118,7 +118,7 @@ void setup()
 
     // initialize CC1101 with default settings
     Serial.print(F("[CC1101] Initializing ... "));
-    int state = radio.begin();
+    int state = radio.beginFSK4();
 
     if (state == RADIOLIB_ERR_NONE)
     {

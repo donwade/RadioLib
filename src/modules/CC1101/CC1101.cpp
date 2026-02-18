@@ -11,12 +11,14 @@ CC1101::CC1101(Module* module) : PhysicalLayer() {
 int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLength) {
   // set the modulation and execute the common part
   this->modulation = RADIOLIB_CC1101_MOD_FORMAT_2_FSK;
+   Serial.printf("\n--OOK/FSK2-----");
   return(this->beginCommon(freq, br, freqDev, rxBw, pwr, preambleLength));
 }
 
 int16_t CC1101::beginFSK4(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLength) {
   // set the modulation and execute the common part
   this->modulation = RADIOLIB_CC1101_MOD_FORMAT_4_FSK;
+  Serial.printf("\n--FSK4 -----");
   return(this->beginCommon(freq, br, freqDev, rxBw, pwr, preambleLength));
 }
 
@@ -1056,7 +1058,8 @@ int16_t CC1101::beginCommon(float freq, float br, float freqDev, float rxBw, int
   // set module properties
 
   Serial.printf("\n-------\nfreq=%f br=%d freqDev=%d rxBw=%d pwr=%d preambleLength=%d\n-------\n",
-				  freq, int(br*1000.), (int)freqDev, (int)rxBw, pwr, preambleLength);
+				  freq, int(br*1000.), (int)(freqDev*1000), (int)(rxBw*1000), pwr, preambleLength);
+				  
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_CC1101_CMD_READ;
   this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_CC1101_CMD_WRITE;
   this->mod->init();
