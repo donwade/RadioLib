@@ -1,5 +1,7 @@
 var hierarchy =
 [
+    [ "ADSBClient", "class_a_d_s_b_client.html", null ],
+    [ "ADSBFrame", "struct_a_d_s_b_frame.html", null ],
     [ "AFSKClient", "class_a_f_s_k_client.html", [
       [ "BellClient", "class_bell_client.html", null ]
     ] ],
@@ -40,6 +42,8 @@ var hierarchy =
         [ "LR11x0WifiResultExtended_t", "struct_l_r11x0_wifi_result_extended__t.html", null ]
       ] ]
     ] ],
+    [ "LR2021LoRaSideDetector_t", "struct_l_r2021_lo_ra_side_detector__t.html", null ],
+    [ "LR2021LrFhssHopTableEntry_t", "struct_l_r2021_lr_fhss_hop_table_entry__t.html", null ],
     [ "LrFhssPacketConfig_t", "struct_lr_fhss_packet_config__t.html", null ],
     [ "LrFhssRate_t", "struct_lr_fhss_rate__t.html", null ],
     [ "Module", "class_module.html", [
@@ -47,14 +51,18 @@ var hierarchy =
     ] ],
     [ "PacketConfig_t", "union_packet_config__t.html", null ],
     [ "PagerClient", "class_pager_client.html", null ],
+    [ "paTableEntry_t", "structpa_table_entry__t.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [
       [ "CC1101", "class_c_c1101.html", null ],
       [ "ExternalRadio", "class_external_radio.html", null ],
-      [ "LR11x0", "class_l_r11x0.html", [
-        [ "LR1110", "class_l_r1110.html", null ],
-        [ "LR1120", "class_l_r1120.html", [
-          [ "LR1121", "class_l_r1121.html", null ]
-        ] ]
+      [ "LRxxxx", "class_l_rxxxx.html", [
+        [ "LR11x0", "class_l_r11x0.html", [
+          [ "LR1110", "class_l_r1110.html", null ],
+          [ "LR1120", "class_l_r1120.html", [
+            [ "LR1121", "class_l_r1121.html", null ]
+          ] ]
+        ] ],
+        [ "LR2021", "class_l_r2021.html", null ]
       ] ],
       [ "RF69", "class_r_f69.html", [
         [ "SX1231", "class_s_x1231.html", [
@@ -96,6 +104,7 @@ var hierarchy =
     ] ],
     [ "RadioLibAES128", "class_radio_lib_a_e_s128.html", null ],
     [ "RadioLibBCH", "class_radio_lib_b_c_h.html", null ],
+    [ "RadioLibCmacState", "struct_radio_lib_cmac_state.html", null ],
     [ "RadioLibConvCode", "class_radio_lib_conv_code.html", null ],
     [ "RadioLibCRC", "class_radio_lib_c_r_c.html", null ],
     [ "RadioLibHal", "class_radio_lib_hal.html", [
