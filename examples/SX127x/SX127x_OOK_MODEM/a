@@ -1,1 +1,2 @@
-m5-stackS2  --log-anything -DUSE_433=1
+m5-stackS2  --log-anything -DUSE_433=1 -DGOD_MODE=1 -DRADIOLIB_GODMODE -DRADIOLIB_LOW_LEVEL
+

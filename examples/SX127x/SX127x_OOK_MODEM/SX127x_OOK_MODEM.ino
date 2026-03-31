@@ -17,6 +17,7 @@
 */
 #include <M5Unified.h>
 #include <SPI.h>
+#include <Arduino.h>
 
 // include the library
 #include <RadioLib.h>
@@ -28,6 +29,8 @@
 #define LORA_SCK  18
 #define LORA_MISO 38
 #define LORA_MOSI 23
+
+const int DIO2_DATA = 25;  //DIO2
 
 
 // Create a custom SPIClass instance (e.g., using VSPI or HSPI on ESP32)
@@ -58,9 +61,24 @@ SX1278 radio = new Module(NSS, DIO0, REESET, DIO1);
 Radio radio = new RadioModule();
 */
 
+volatile bool bIsrBit;
+volatile bool bLastBit;
+uint32_t isrCnt;
+
+
+// Function called every time a bit is received (interrupt)
+void ISR_readbit(void) 
+{
+  // Read the raw bit from the DIO2 pin
+  bIsrBit = digitalRead(DIO2_DATA);
+  isrCnt++;
+}
+	
 void setup() 
 {
 
+  pinMode(DIO2_DATA, INPUT);
+  
   Serial.begin(115200);
   M5.begin();
 
@@ -153,35 +171,37 @@ void setup()
 	  delay(500);
   }
 
-  delay(-1);
+  Serial.printf("starting to loop\n");
+ 
+   attachInterrupt(DIO2_DATA, ISR_readbit, CHANGE);
+   state = radio.directMode();
 
-  #warning "This sketch is just an API guide! Read the note at line 6."
 }
+
+
+uint32_t oldIsr = -1;
 
 void loop() {
   // FSK modem can use the same transmit/receive methods
   // as the LoRa modem, even their interrupt-driven versions
   // NOTE: FSK modem maximum packet length is 63 bytes!
   int state;
-  
-  // receive FSK packet
-  String str;
-  state = radio.receive(str);
-  /*
-    byte byteArr[8];
-    int state = radio.receive(byteArr, 8);
-  */
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("[SX1278] Received packet!"));
-    Serial.print(F("[SX1278] Data:\t"));
-    Serial.println(str);
-  } else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
-    Serial.println(F("[SX1278] Timed out while waiting for packet!"));
-  } else {
-    Serial.println(F("[SX1278] Failed to receive packet, code "));
-    Serial.println(state);
-  }
 
+
+  while (true)
+  {
+	 if (oldIsr !=  isrCnt)
+	 {
+	 	Serial.printf("count = %d\n", isrCnt);
+	 	oldIsr = isrCnt;
+	 }
+	 
+	 if (bIsrBit != bLastBit)
+	 {
+	  	bLastBit = bIsrBit;
+		Serial.printf("hi %d\n", bLastBit);
+	 }
+  }; 	
 #if 0
   // FSK modem has built-in address filtering system
   // it can be enabled by setting node address, broadcast
