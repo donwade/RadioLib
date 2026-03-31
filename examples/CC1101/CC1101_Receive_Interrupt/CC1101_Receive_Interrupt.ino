@@ -91,12 +91,15 @@ volatile bool receivedFlag = false;
 // IMPORTANT: this function MUST be 'void' type
 //            and MUST NOT have any arguments!
 
+volatile uint32_t bigCount = 0;
 
 #if defined(ESP8266) || defined(ESP32)
 ICACHE_RAM_ATTR
 #endif
 void onIRQrx(void)
 {
+	bigCount++;
+
     // we got a packet, set the flag
     receivedFlag = true;
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
@@ -110,7 +113,7 @@ void onIRQrx(void)
 
 void setup()
 {
-    _setup_M5();
+    //_setup_M5();
 
     Serial.begin(115200);
     delay(1000);
@@ -179,7 +182,7 @@ void loop()
 	uint8_t cline = 0;
 	
 	char msg[50];
-    _loop_M5();
+    ////_loop_M5();
 
 	int ret1 = xSemaphoreTake( sem_DATA_READY, pdMS_TO_TICKS(30000));
 	if (ret1 == pdTRUE)
@@ -190,6 +193,8 @@ void loop()
 
         int numBytes = radio.getPacketLength(true);
         Serial.printf("xxxx len = %d\n", numBytes);
+
+        assert( numBytes > 0 && numBytes < sizeof(byteArr));
 
         int state = radio.readData(byteArr, numBytes);
         byteArr[numBytes]= 0;
@@ -205,28 +210,27 @@ void loop()
 
 			sprintf(msg,"rx = %d len=%d", ++rx_cnt, numBytes);
  			Serial.printf("%s\n", msg);
- 			_cprintf(_GREEN, ++cline, "%s\n", msg);
+ 			////_cprintf(_GREEN, ++cline, "%s\n", msg);
 			
             // print RSSI (Received Signal Strength Indicator)
             // of the last received packet
             
 	        sprintf(msg, "RSSI: %5.1f", radio.getRSSI());
  			Serial.printf("%s\n", msg);
- 			_cprintf(_GREEN, ++cline, "%s\n", msg);
+ 			////_cprintf(_GREEN, ++cline, "%s\n", msg);
  			
             // print LQI (Link Quality Indicator)
             // of the last received packet, lower is better
             
 	        sprintf(msg, "LQI: %5.1f", radio.getLQI());
  			Serial.printf("%s\n", msg);
- 			_cprintf(_GREEN, ++cline, "%s\n", msg);
+ 			////_cprintf(_GREEN, ++cline, "%s\n", msg);
  
         }
         else if (state == RADIOLIB_ERR_CRC_MISMATCH)
         {
             // packet was received, but is malformed
-            Serial.println(F("CRC error!"));
-
+ 			Serial.printf("CRC error [%d ] %s \n",numBytes, byteArr); 
         }
         else
         {
@@ -235,6 +239,7 @@ void loop()
             Serial.println(state);
 
         }
+		////_cprintf(_GREEN, 5, "irq cnt=%d\n", bigCount);
 
         // put module back to listen mode
         radio.startReceive();

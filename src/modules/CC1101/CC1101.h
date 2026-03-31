@@ -515,7 +515,7 @@
 // RadioLib defaults
 #define RADIOLIB_CC1101_DEFAULT_FREQ                            905.0
 #define RADIOLIB_CC1101_DEFAULT_BR                              .3
-#define RADIOLIB_CC1101_DEFAULT_FREQDEV                         5.0
+#define RADIOLIB_CC1101_DEFAULT_FREQDEV                         2.4
 #define RADIOLIB_CC1101_DEFAULT_RXBW                            58.0
 #define RADIOLIB_CC1101_DEFAULT_POWER                           -10
 #define RADIOLIB_CC1101_DEFAULT_PREAMBLELEN                     16
