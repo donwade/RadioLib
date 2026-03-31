@@ -1,0 +1,1 @@
+m5-stackS2  --log-anything -DUSE_433=1
