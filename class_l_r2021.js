@@ -25,6 +25,7 @@ var class_l_r2021 =
     [ "getChannelScanResult", "class_l_r2021.html#a5c8560915043a2c21892b51bc576ea73", null ],
     [ "getIrqFlags", "class_l_r2021.html#a3ed89cc7405fc0e0157a146cb1aee07c", null ],
     [ "getLoRaPacketStatus", "class_l_r2021.html#a766ef834a27b53d2ab74b0e98c77e2c2", null ],
+    [ "getLoRaRxHeaderInfo", "class_l_r2021.html#a1f88f57889841379423aef67aaf8a7e0", null ],
     [ "getModem", "class_l_r2021.html#a8d7069e59abecae1e4b48de5920da4b3", null ],
     [ "getPacketLength", "class_l_r2021.html#aea734806d4056f8ea47b4f828bcf8b3b", null ],
     [ "getRSSI", "class_l_r2021.html#a444ec095ed8bd08df909b3b1b899d35e", null ],
@@ -92,5 +93,6 @@ var class_l_r2021 =
     [ "transmit", "class_l_r2021.html#a8126dd09cf4c51eabcf7f72dc03b068d", null ],
     [ "transmitDirect", "class_l_r2021.html#a670691f6a40a82f2e6b25e90c4200f57", null ],
     [ "variablePacketLengthMode", "class_l_r2021.html#a68728e2b6347b49bae942a9360f40988", null ],
+    [ "fastCad", "class_l_r2021.html#a24b3a41d84fc6a0ebc214479f163eb71", null ],
     [ "irqDioNum", "class_l_r2021.html#a66b9703e39e95dc14e72328aee9becd0", null ]
 ];
